@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "flip-test",
+    "slug": "flip-test",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
