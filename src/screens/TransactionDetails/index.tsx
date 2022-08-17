@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
-import * as React from 'react';
+import * as React from 'react'
 
-const TransactionList = () => {
+export default function TransactionDetailsScreen() {
   return (
     <View>
-      <Text>TransactionList</Text>
+      <Text>Transaction Details</Text>
     </View>
   )
 }
-
-export default TransactionList
 
 const styles = StyleSheet.create({})
