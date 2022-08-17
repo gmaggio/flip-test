@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 import TransactionList from '../screens/TransactionList'
 import TransactionDetails from '../screens/TransactionDetails'
-import { Button, Text } from 'react-native'
 
 const Stack = createNativeStackNavigator()
 

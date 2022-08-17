@@ -1,24 +1,12 @@
 import React from "react"
-import { StyleSheet, View } from "react-native"
-import AppText from "./AppText"
-import { AppFonts } from '../styles/globalStyles';
+import { View } from "react-native"
 
 const Divider = (props: {
-  label: string,
-  backgroundColor?: string,
-  borderColor?: string,
+  height: number,
 }) => {
   return (
-    <View style={styles.layout} />
+    <View style={{ height: props.height }} />
   )
 }
 
 export default Divider
-
-const styles = StyleSheet.create({
-  layout: {},
-  textStyle: {
-    color: 'red',
-    fontFamily: AppFonts.bold,
-  },
-})

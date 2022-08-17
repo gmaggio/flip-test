@@ -8,7 +8,7 @@ export const trxListStyles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 20,
   },
-  pageLayout: {
+  listLayout: {
     paddingHorizontal: 8,
     paddingVertical: 12,
   },

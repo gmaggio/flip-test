@@ -3,6 +3,7 @@ import React from 'react'
 import { trxListStyles } from './TransactionList.styles'
 import AppText from '../../ui/AppText'
 import { Badge } from '../../ui/Badge';
+import Divider from '../../ui/Divider';
 
 // TODO: Temporary data
 const DATA: TransactionData[] = [
@@ -49,6 +50,14 @@ const DATA: TransactionData[] = [
     fee: 0
   },
 ]
+var _dummyData: TransactionData[] = []
+for (let index = 0; index < (3 * 15); index++) {
+  var _curr = index % 3
+  var _new = { ...DATA[_curr] }
+  _new.id = _new.id + '-' + index
+  _new.id = _new.beneficiaryName + ' - ' + index
+  _dummyData[index] = _new;
+}
 
 export default function TransactionList({ navigation }) {
   React.useLayoutEffect(() => {
@@ -63,9 +72,7 @@ export default function TransactionList({ navigation }) {
   }, [navigation])
 
   return (
-    <View style={trxListStyles.pageLayout}>
-      <TrxList />
-    </View>
+    <TrxList />
   )
 }
 
@@ -76,7 +83,9 @@ const TrxList = () => {
 
   return (
     <FlatList
-      data={DATA}
+      contentContainerStyle={trxListStyles.listLayout}
+
+      data={_dummyData}
 
       renderItem={({ item }) => {
         var _colorIndicator = item.status === 'PENDING' ? '#f9663b' : '#56b686'
@@ -116,7 +125,7 @@ const TrxList = () => {
 
       ItemSeparatorComponent={
         ({ }) => (
-          <View style={{ marginBottom: 8 }} />
+          <Divider height={8} />
         )
       }
     />
