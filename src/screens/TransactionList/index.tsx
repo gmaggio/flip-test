@@ -1,5 +1,5 @@
-import { FlatList, Modal, Pressable, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useState } from 'react'
+import { FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { trxListStyles } from './TransactionList.styles'
 import AppText from '../../ui/AppText'
 import Divider from '../../ui/Divider'
@@ -8,8 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
 import { appStyles, appTheme } from '../../styles/appStyles'
 import Badge from '../../ui/Badge'
-import ModalBox from '../../ui/ModalBox'
-import SortModal from './ui/SortModal/SortModal'
+import SortModal, { SortLabels } from './ui/SortModal/SortModal'
 
 // TODO: Temporary data
 const DATA: TransactionData[] = [
@@ -67,30 +66,29 @@ for (let index = 0; index < (3 * 15); index++) {
 
 export default function TransactionList({ navigation }) {
   const [sortModalVisible, setSortModalVisible] = useState(false)
+  const [sortType, setSortTypes] = useState('sort' as SortTypes)
 
   function toggleSortModal(visible: boolean): void {
     setSortModalVisible(visible)
   }
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      header: () => {
-        return <SearchBar
-          visible={sortModalVisible}
-          toggleSortModal={toggleSortModal}
-        />
-      },
-    })
-  }, [navigation])
+  function selectSortType(type: SortTypes): void {
+    setSortTypes(type)
+    setSortModalVisible(false)
+  }
 
   return (
     <View style={trxListStyles.pageLayout}>
       <SortModal
         visible={sortModalVisible}
-        value={'sort'}
-        onSelect={(value) => console.log(value)}
+        value={sortType}
+        onSelect={(value: SortTypes) => selectSortType(value)}
         onClose={() => toggleSortModal(false)}
+      />
+      <SearchBar
+        sortType={sortType}
+        visible={sortModalVisible}
+        toggleSortModal={toggleSortModal}
       />
       <List />
     </View>
@@ -98,6 +96,7 @@ export default function TransactionList({ navigation }) {
 }
 
 const SearchBar = (props: {
+  sortType: SortTypes,
   visible: any,
   toggleSortModal: (visible: boolean) => void,
 }) => {
@@ -121,7 +120,7 @@ const SearchBar = (props: {
       <Divider.H value={12} />
       <Pressable onPress={() => props.toggleSortModal(true)}>
         <View style={trxListStyles.searchBarButton}>
-          <AppText style={trxListStyles.searchBarButtonText}>URUTKAN</AppText>
+          <AppText style={trxListStyles.searchBarButtonText}>{SortLabels[props.sortType]}</AppText>
           <Divider.H value={6} />
           <Icon name='chevron-down' size={24} color={appTheme.colors.red} />
         </View>

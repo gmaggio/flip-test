@@ -5,21 +5,21 @@ import ModalBox from "../../../../ui/ModalBox"
 import { SortTypes } from "../../TransactionList.types"
 import { sortModalStyles } from "./SortModal.styles"
 
+
+export const SortLabels = {
+  sort: 'URUTKAN',
+  alphaAsc: 'Nama A-Z',
+  alphaDesc: 'Nama Z-A',
+  newest: 'Tanggal Terbaru',
+  oldest: 'Tanggal Terlama',
+}
+
 const SortModal = (props: {
   value: SortTypes,
   visible: boolean,
   onSelect: (value: SortTypes) => void,
   onClose: () => void,
 }) => {
-
-  const SortLabels = {
-    sort: 'URUTKAN',
-    alphaAsc: 'Nama A-Z',
-    alphaDesc: 'Nama Z-A',
-    newest: 'Tanggal Terbaru',
-    oldest: 'Tanggal Terlama',
-  }
-
   return (
     <ModalBox
       visible={props.visible}
