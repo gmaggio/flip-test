@@ -1,12 +1,26 @@
 import React from "react"
 import { View } from "react-native"
 
-const Divider = (props: {
-  height: number,
-}) => {
+type DividerProps = {
+  width?: number,
+  height?: number,
+}
+
+const BaseDivider = (props: DividerProps & { type: 'horizonal' | 'vertical' }) => {
   return (
-    <View style={{ height: props.height }} />
+    <View style={{
+      width: props.type === 'horizonal' ? props.width : undefined,
+      height: props.type === 'vertical' ? props.height : undefined,
+    }} />
   )
 }
 
+const Divider = {
+  H: (props: { value: number }) => (
+    <BaseDivider {...props} type={'horizonal'} width={props.value} />
+  ),
+  V: (props: { value: number }) => (
+    <BaseDivider {...props} type={'vertical'} height={props.value} />
+  )
+}
 export default Divider

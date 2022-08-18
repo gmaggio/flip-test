@@ -1,4 +1,4 @@
-type TransactionData = {
+export type TransactionData = {
   id: string,
   amount: number,
   uniqueCode: number,

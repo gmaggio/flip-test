@@ -1,9 +1,13 @@
-import { FlatList, Text, TouchableHighlight, View } from 'react-native'
+import { FlatList, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React from 'react'
 import { trxListStyles } from './TransactionList.styles'
-import AppText from '../../ui/AppText'
+import AppText from '../../ui/AppText';
 import { Badge } from '../../ui/Badge';
 import Divider from '../../ui/Divider';
+import { TransactionData } from './TransactionList.types';
+import Icon from 'react-native-vector-icons/Ionicons';
+import LineIcon from 'react-native-vector-icons/SimpleLineIcons';
+import { globalStyles } from '../../styles/globalStyles';
 
 // TODO: Temporary data
 const DATA: TransactionData[] = [
@@ -63,20 +67,44 @@ export default function TransactionList({ navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      header: (props: any) => (
-        <View style={trxListStyles.searchBar}>
-          <Text>Cari nama, bank, atau nominal</Text>
-        </View>
-      ),
+      header: (props: any) => <SearchBar />,
     })
   }, [navigation])
 
   return (
-    <TrxList />
+    <List />
   )
 }
 
-const TrxList = () => {
+const SearchBar = () => {
+  const [text, onChangeText] = React.useState<string>('');
+
+  return (
+    <View style={trxListStyles.searchBar}>
+      <LineIcon name='magnifier' size={28} color={'#b0b0b0'} />
+      <Divider.H value={6} />
+      <TextInput
+        style={trxListStyles.searchBarField}
+        onChangeText={onChangeText}
+        value={text}
+        placeholder='Cari nama, bank, atau nominal'
+        keyboardType='numeric'
+
+      />
+      <Divider.H value={12} />
+      <TouchableWithoutFeedback>
+        <View style={trxListStyles.searchBarButton}>
+          <AppText style={trxListStyles.searchBarButtonText}>URUTKAN</AppText>
+          <Divider.H value={6} />
+          <Icon name='chevron-down' size={24} color='#f9663b' />
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  )
+}
+
+
+const List = () => {
   function onPress(item: TransactionData): void {
     console.log('item: ' + item.id)
   }
@@ -91,16 +119,19 @@ const TrxList = () => {
         var _colorIndicator = item.status === 'PENDING' ? '#f9663b' : '#56b686'
 
         return (
-          <TouchableHighlight
+          <TouchableOpacity
             key={item.id}
             onPress={() => onPress(item)}
+            activeOpacity={.5}
           >
             <View style={[
               trxListStyles.listItem, { borderLeftColor: _colorIndicator }
             ]}>
               <View style={trxListStyles.listDetails}>
                 <AppText style={trxListStyles.listTitle}>
-                  {item.senderBank + ' -> ' + item.beneficiaryBank}
+                  <Text>{item.senderBank}</Text>
+                  <Icon name='arrow-forward' size={16} color={globalStyles.textStyles.color} />
+                  <Text>{item.beneficiaryBank}</Text>
                 </AppText>
                 <AppText style={trxListStyles.listDescription}>{item.beneficiaryName}</AppText>
                 <AppText style={trxListStyles.listSubDescription}>{item.amount} ● {item.createdAt}</AppText>
@@ -119,13 +150,13 @@ const TrxList = () => {
                 }
               </View>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         );
       }}
 
       ItemSeparatorComponent={
         ({ }) => (
-          <Divider height={8} />
+          <Divider.V value={8} />
         )
       }
     />
