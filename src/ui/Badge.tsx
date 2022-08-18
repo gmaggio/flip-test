@@ -1,7 +1,8 @@
-import React from "react"
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
-import AppText from "./AppText"
+import React from 'react'
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+
 import { appStyles, appTheme } from '../styles/appStyles'
+import AppText from './AppText'
 
 export type BadgeProps = {
   label: string,

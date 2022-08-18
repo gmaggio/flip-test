@@ -1,6 +1,7 @@
-import React from "react"
-import { Modal, View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import { appStyles, appTheme } from "../styles/appStyles"
+import React from 'react'
+import { Modal, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+
+import { appStyles, appTheme } from '../styles/appStyles'
 
 const ModalBox = (props: {
   children?: React.ReactNode,

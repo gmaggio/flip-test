@@ -1,9 +1,10 @@
-import React from "react"
-import { TouchableOpacity, View } from "react-native"
-import AppText from "../../../../ui/AppText"
-import ModalBox from "../../../../ui/ModalBox"
-import { SortTypes } from "../../TransactionList.types"
-import { sortModalStyles } from "./SortModal.styles"
+import React from 'react'
+import { TouchableOpacity, View } from 'react-native'
+
+import AppText from '../../../../ui/AppText'
+import ModalBox from '../../../../ui/ModalBox'
+import { SortTypes } from '../../TransactionList.types'
+import { sortModalStyles } from './SortModal.styles'
 
 
 export const SortLabels = {

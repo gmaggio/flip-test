@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native'
-import { appTheme, appStyles } from '../../styles/appStyles'
+import { StyleSheet } from 'react-native';
+
+import { appStyles, appTheme } from '../../styles/appStyles';
 
 export const trxListStyles = StyleSheet.create({
   // Page

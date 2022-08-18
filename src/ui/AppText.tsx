@@ -1,5 +1,6 @@
-import React from "react"
-import { Text, TextProps } from "react-native"
+import React from 'react'
+import { Text, TextProps } from 'react-native'
+
 import { appStyles } from '../styles/appStyles'
 
 const AppText = (props: TextProps) => {

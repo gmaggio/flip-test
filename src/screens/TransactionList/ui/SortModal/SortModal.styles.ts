@@ -1,5 +1,6 @@
-import {StyleSheet} from "react-native"
-import {appTheme} from "../../../../styles/appStyles"
+import { StyleSheet } from 'react-native';
+
+import { appTheme } from '../../../../styles/appStyles';
 
 export const sortModalStyles = StyleSheet.create({
   sortOptionsList: {

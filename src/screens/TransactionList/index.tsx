@@ -1,13 +1,15 @@
-import { FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { trxListStyles } from './TransactionList.styles'
-import AppText from '../../ui/AppText'
-import Divider from '../../ui/Divider'
-import { SortTypes, TransactionData } from './TransactionList.types'
+import { FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
+
 import { appStyles, appTheme } from '../../styles/appStyles'
+import AppText from '../../ui/AppText'
 import Badge from '../../ui/Badge'
+import Divider from '../../ui/Divider'
+import { Formatters } from '../../utils/formatter'
+import { trxListStyles } from './TransactionList.styles'
+import { SortTypes, TransactionData } from './TransactionList.types'
 import SortModal, { SortLabels } from './ui/SortModal/SortModal'
 
 // TODO: Temporary data
@@ -141,7 +143,10 @@ const List = () => {
       data={_dummyData}
 
       renderItem={({ item }) => {
-        var _colorIndicator = item.status === 'PENDING' ? appTheme.colors.danger : appTheme.colors.success
+        var _colorIndicator = item.status === 'PENDING'
+          ? appTheme.colors.danger
+          : appTheme.colors.success
+
 
         return (
           <TouchableOpacity
@@ -154,12 +159,16 @@ const List = () => {
             ]}>
               <View style={trxListStyles.listDetails}>
                 <AppText style={trxListStyles.listTitle}>
-                  <Text>{item.senderBank}</Text>
+                  <Text>{Formatters.bankFixCase(item.senderBank)}</Text>
                   <Icon name='arrow-forward' size={16} color={appStyles.textStyles.color} />
-                  <Text>{item.beneficiaryBank}</Text>
+                  <Text>{Formatters.bankFixCase(item.beneficiaryBank)}</Text>
                 </AppText>
-                <AppText style={trxListStyles.listDescription}>{item.beneficiaryName}</AppText>
-                <AppText style={trxListStyles.listSubDescription}>{item.amount} ● {item.createdAt}</AppText>
+                <AppText style={trxListStyles.listDescription}>
+                  {item.beneficiaryName.toUpperCase()}
+                </AppText>
+                <AppText style={trxListStyles.listSubDescription}>
+                  {Formatters.currency(item.amount)} ● {Formatters.date(item.createdAt)}
+                </AppText>
               </View>
               <View>
                 {item.status === 'PENDING' ?
