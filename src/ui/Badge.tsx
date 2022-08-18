@@ -1,7 +1,7 @@
 import React from "react"
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import AppText from "./AppText"
-import { AppFonts, globalStyles } from '../styles/globalStyles';
+import { AppFonts, globalStyles, AppColors } from '../styles/globalStyles';
 
 export type BadgeProps = {
   label: string,
@@ -12,16 +12,16 @@ export const Badge = (props: BadgeProps & {
   type: 'filled' |
   'outline'
 }) => {
-  var _color = props.color ?? '#000'
+  var _color = props.color ?? AppColors.gray
 
   var _layoutStyle: StyleProp<ViewStyle> = {
     backgroundColor: props.type === 'filled' ? _color : undefined,
     borderWidth: props.type === 'outline' ? 1 : undefined,
-    borderColor: props.type === 'outline' ? props.color : undefined,
+    borderColor: props.type === 'outline' ? _color : undefined,
   }
 
   var _textStyle: StyleProp<TextStyle> = {
-    color: props.type === 'filled' ? '#fff' : globalStyles.textStyles.color,
+    color: props.type === 'filled' ? AppColors.textOnDark : globalStyles.textStyles.color,
   }
 
   return (
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: AppFonts.bold,
-    fontSize: 12,
+    fontSize: AppFonts.sizeSecondary,
   },
 })

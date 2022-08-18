@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native'
-import { globalStyles, AppFonts } from '../../styles/globalStyles';
+import { globalStyles, AppFonts, AppColors } from '../../styles/globalStyles';
 
 export const trxListStyles = StyleSheet.create({
   // Search Bar
 
   searchBar: {
-    backgroundColor: '#ffffff',
+    backgroundColor: AppColors.surface,
     paddingHorizontal: 14,
     paddingVertical: 20,
     flexDirection: 'row',
@@ -28,7 +28,7 @@ export const trxListStyles = StyleSheet.create({
     alignItems: 'center',
   },
   searchBarButtonText: {
-    color: '#f9663b',
+    color: AppColors.red,
     fontFamily: AppFonts.bold,
     fontSize: 12,
   },
@@ -40,13 +40,13 @@ export const trxListStyles = StyleSheet.create({
     paddingVertical: 12,
   },
   listItem: {
-    backgroundColor: '#ffffff',
+    backgroundColor: AppColors.surface,
     paddingVertical: 12,
     paddingLeft: 18,
     paddingRight: 10,
     borderRadius: 6,
     borderLeftWidth: 8,
-    borderLeftColor: '#000',
+    borderLeftColor: AppColors.black,
     flexDirection: 'row',
     alignContent: 'space-between',
     alignItems: 'center',
@@ -57,14 +57,13 @@ export const trxListStyles = StyleSheet.create({
   },
   listTitle: {
     fontFamily: AppFonts.bold,
-    fontSize: 16,
+    fontSize: AppFonts.sizeLarge,
   },
   listDescription: {
-    fontSize: 14,
     marginTop: 2,
   },
   listSubDescription: {
-    fontSize: 12,
+    fontSize: AppFonts.sizeSecondary,
     marginTop: 2,
   },
 })

@@ -1,5 +1,5 @@
-import { FlatList, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import React from 'react'
+import { FlatList, Pressable, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useState } from 'react'
 import { trxListStyles } from './TransactionList.styles'
 import AppText from '../../ui/AppText';
 import { Badge } from '../../ui/Badge';
@@ -7,7 +7,7 @@ import Divider from '../../ui/Divider';
 import { TransactionData } from './TransactionList.types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import { globalStyles } from '../../styles/globalStyles';
+import { globalStyles, AppColors } from '../../styles/globalStyles';
 
 // TODO: Temporary data
 const DATA: TransactionData[] = [
@@ -78,10 +78,11 @@ export default function TransactionList({ navigation }) {
 
 const SearchBar = () => {
   const [text, onChangeText] = React.useState<string>('');
+  const [sortModalVisible, setSortModalVisible] = useState(false);
 
   return (
     <View style={trxListStyles.searchBar}>
-      <LineIcon name='magnifier' size={28} color={'#b0b0b0'} />
+      <LineIcon name='magnifier' size={26} color={AppColors.textSubtle} />
       <Divider.H value={6} />
       <TextInput
         style={trxListStyles.searchBarField}
@@ -92,13 +93,13 @@ const SearchBar = () => {
 
       />
       <Divider.H value={12} />
-      <TouchableWithoutFeedback>
+      <Pressable onPress={() => setSortModalVisible(!sortModalVisible)}>
         <View style={trxListStyles.searchBarButton}>
           <AppText style={trxListStyles.searchBarButtonText}>URUTKAN</AppText>
           <Divider.H value={6} />
-          <Icon name='chevron-down' size={24} color='#f9663b' />
+          <Icon name='chevron-down' size={24} color={AppColors.red} />
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     </View>
   )
 }
@@ -116,7 +117,7 @@ const List = () => {
       data={_dummyData}
 
       renderItem={({ item }) => {
-        var _colorIndicator = item.status === 'PENDING' ? '#f9663b' : '#56b686'
+        var _colorIndicator = item.status === 'PENDING' ? AppColors.danger : AppColors.success
 
         return (
           <TouchableOpacity
