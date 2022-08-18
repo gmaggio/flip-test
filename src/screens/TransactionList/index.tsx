@@ -3,7 +3,7 @@ import { FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 're
 import Icon from 'react-native-vector-icons/Ionicons'
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
 
-import { appStyles, appTheme } from '../../styles/appStyles'
+import { appTheme } from '../../styles/appTheme'
 import AppText from '../../ui/AppText'
 import Badge from '../../ui/Badge'
 import Divider from '../../ui/Divider'
@@ -109,7 +109,7 @@ const SearchBar = (props: {
       <LineIcon
         name='magnifier'
         size={26}
-        color={appTheme.colors.textSubtle}
+        color={appTheme.texts.colorSubtle}
       />
       <Divider.H value={6} />
       <TextInput
@@ -160,7 +160,7 @@ const List = () => {
               <View style={trxListStyles.listDetails}>
                 <AppText style={trxListStyles.listTitle}>
                   <Text>{Formatters.bankFixCase(item.senderBank)}</Text>
-                  <Icon name='arrow-forward' size={16} color={appStyles.textStyles.color} />
+                  <Icon name='arrow-forward' size={16} color={appTheme.texts.colorPrimary} />
                   <Text>{Formatters.bankFixCase(item.beneficiaryBank)}</Text>
                 </AppText>
                 <AppText style={trxListStyles.listDescription}>

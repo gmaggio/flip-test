@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
-import { appStyles, appTheme } from '../styles/appStyles'
+import { appTheme } from '../styles/appTheme'
 import AppText from './AppText'
 
 export type BadgeProps = {
@@ -22,7 +22,7 @@ const BaseBadge = (props: BadgeProps & {
   }
 
   var _textStyle: StyleProp<TextStyle> = {
-    color: props.type === 'filled' ? appTheme.colors.textOnDark : appStyles.textStyles.color,
+    color: props.type === 'filled' ? appTheme.texts.colorOnDark : appTheme.texts.colorPrimary,
   }
 
   return (
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   textStyle: {
-    fontFamily: appTheme.fonts.bold,
-    fontSize: appTheme.fonts.sizeSecondary,
+    fontFamily: appTheme.texts.bold,
+    fontSize: appTheme.texts.sizeSecondary,
   },
 })

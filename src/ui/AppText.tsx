@@ -1,13 +1,13 @@
 import React from 'react'
 import { Text, TextProps } from 'react-native'
 
-import { appStyles } from '../styles/appStyles'
+import { appTheme } from '../styles/appTheme'
 
 const AppText = (props: TextProps) => {
 
   return (
     <Text {...props} style={[
-      appStyles.textStyles,
+      appTheme.styles.textStyles,
       props.style,
     ]} />
   )

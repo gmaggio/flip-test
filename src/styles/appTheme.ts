@@ -11,11 +11,6 @@ class appColors{
   static green= '#56b686';
   static red = '#f9663b';
 
-  // Texts
-  static textPrimary = this.black;
-  static textSubtle = this.gray;
-  static textOnDark = this.white;
-
   // Surfaces
   static surface =this.white;
   static background = this.grayLight;
@@ -25,7 +20,7 @@ class appColors{
   static danger = this.red;
 }
 
-const appFonts = {
+const appTexts = {
   // Weights
   regular: 'Montserrat-Regular',
   bold: 'Montserrat-Bold',
@@ -34,6 +29,11 @@ const appFonts = {
   sizePrimary: 14,
   sizeSecondary: 12,
   sizeLarge: 16,
+
+  // Colors
+  colorPrimary: appColors.black,
+  colorSubtle: appColors.gray,
+  colorOnDark: appColors.white,
 }
 
 const appLayout = {
@@ -42,25 +42,26 @@ const appLayout = {
   radiusSmall: 4,
 }
 
-export const appTheme = {
-  colors: appColors,
-  fonts: appFonts,
-  layout: appLayout,
-}
-
-export const appStyles = StyleSheet.create({
+const appStyles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   textStyles: {
-    color: appColors.textPrimary,
-    fontSize: appFonts.sizePrimary,
-    fontFamily: appFonts.regular,
+    color: appTexts.colorPrimary,
+    fontSize: appTexts.sizePrimary,
+    fontFamily: appTexts.regular,
 
     bold: {
-      fontFamily: appFonts.bold,
+      fontFamily: appTexts.bold,
     },
   },
 })
+
+export const appTheme = {
+  colors: appColors,
+  texts: appTexts,
+  layout: appLayout,
+  styles: appStyles,
+}

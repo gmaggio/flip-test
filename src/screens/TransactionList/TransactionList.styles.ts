@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { appStyles, appTheme } from '../../styles/appStyles';
+import { appTheme } from '../../styles/appTheme';
 
 export const trxListStyles = StyleSheet.create({
   // Page
@@ -21,7 +21,7 @@ export const trxListStyles = StyleSheet.create({
     alignItems: 'center',
   },
   searchBarField: {
-    ...appStyles.textStyles,
+    ...appTheme.styles.textStyles,
     fontSize: 12,
     padding: 0,
     margin: 0,
@@ -37,7 +37,7 @@ export const trxListStyles = StyleSheet.create({
   },
   searchBarButtonText: {
     color: appTheme.colors.red,
-    fontFamily: appTheme.fonts.bold,
+    fontFamily: appTheme.texts.bold,
     fontSize: 12,
   },
 
@@ -64,14 +64,14 @@ export const trxListStyles = StyleSheet.create({
     flexGrow: 1,
   },
   listTitle: {
-    fontFamily: appTheme.fonts.bold,
-    fontSize: appTheme.fonts.sizeLarge,
+    fontFamily: appTheme.texts.bold,
+    fontSize: appTheme.texts.sizeLarge,
   },
   listDescription: {
     marginTop: 2,
   },
   listSubDescription: {
-    fontSize: appTheme.fonts.sizeSecondary,
+    fontSize: appTheme.texts.sizeSecondary,
     marginTop: 2,
   },
 })

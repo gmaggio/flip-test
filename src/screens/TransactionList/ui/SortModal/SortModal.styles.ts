@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { appTheme } from '../../../../styles/appStyles';
+import { appTheme } from '../../../../styles/appTheme';
 
 export const sortModalStyles = StyleSheet.create({
   sortOptionsList: {
@@ -13,7 +13,7 @@ export const sortModalStyles = StyleSheet.create({
     alignItems: 'center'
   },
   sortOptionsLabel: {
-    fontFamily: appTheme.fonts.bold,
+    fontFamily: appTheme.texts.bold,
     flexGrow: 1
   },
   sortOptionsSwitch: {

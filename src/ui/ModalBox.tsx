@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
-import { appStyles, appTheme } from '../styles/appStyles'
+import { appTheme } from '../styles/appTheme'
 
 const ModalBox = (props: {
   children?: React.ReactNode,
@@ -33,7 +33,7 @@ export default ModalBox
 
 const styles = StyleSheet.create({
   modalOverlay: {
-    ...appStyles.centeredView,
+    ...appTheme.styles.centeredView,
     padding: 30,
     backgroundColor: appTheme.colors.black + '88',
     alignItems: 'stretch',
