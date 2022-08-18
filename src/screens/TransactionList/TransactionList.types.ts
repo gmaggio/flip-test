@@ -10,5 +10,7 @@ export type TransactionData = {
   remark: string,
   createdAt: string,
   completedAt: string,
-  fee: number,
+  fee: number
 }
+
+export type SortTypes = 'sort' | 'alphaAsc' | 'alphaDesc' | 'newest' | 'oldest'

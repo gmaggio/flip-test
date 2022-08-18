@@ -1,18 +1,18 @@
 import React from "react"
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import AppText from "./AppText"
-import { AppFonts, globalStyles, AppColors } from '../styles/globalStyles';
+import { appStyles, appTheme } from '../styles/appStyles'
 
 export type BadgeProps = {
   label: string,
   color?: string,
 }
 
-export const Badge = (props: BadgeProps & {
+const BaseBadge = (props: BadgeProps & {
   type: 'filled' |
   'outline'
 }) => {
-  var _color = props.color ?? AppColors.gray
+  var _color = props.color ?? appTheme.colors.gray
 
   var _layoutStyle: StyleProp<ViewStyle> = {
     backgroundColor: props.type === 'filled' ? _color : undefined,
@@ -21,7 +21,7 @@ export const Badge = (props: BadgeProps & {
   }
 
   var _textStyle: StyleProp<TextStyle> = {
-    color: props.type === 'filled' ? AppColors.textOnDark : globalStyles.textStyles.color,
+    color: props.type === 'filled' ? appTheme.colors.textOnDark : appStyles.textStyles.color,
   }
 
   return (
@@ -31,15 +31,17 @@ export const Badge = (props: BadgeProps & {
   )
 }
 
-export const AppBadge = {
+const Badge = {
   Filled: (props: BadgeProps) => (
-    <Badge {...props} type={'filled'} />
+    <BaseBadge {...props} type={'filled'} />
   ),
   Outline: (props: BadgeProps) => (
-    <Badge {...props} type={'outline'} />
+    <BaseBadge {...props} type={'outline'} />
   )
 }
-export default AppBadge
+export default Badge
+
+// STYLES
 
 const styles = StyleSheet.create({
   layout: {
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   textStyle: {
-    fontFamily: AppFonts.bold,
-    fontSize: AppFonts.sizeSecondary,
+    fontFamily: appTheme.fonts.bold,
+    fontSize: appTheme.fonts.sizeSecondary,
   },
 })

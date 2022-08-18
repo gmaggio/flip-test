@@ -1,12 +1,12 @@
 import React from "react"
 import { Text, TextProps } from "react-native"
-import { globalStyles, AppFonts } from '../styles/globalStyles';
+import { appStyles } from '../styles/appStyles'
 
 const AppText = (props: TextProps) => {
 
   return (
     <Text {...props} style={[
-      globalStyles.textStyles,
+      appStyles.textStyles,
       props.style,
     ]} />
   )

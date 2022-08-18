@@ -1,11 +1,18 @@
 import { StyleSheet } from 'react-native'
-import { globalStyles, AppFonts, AppColors } from '../../styles/globalStyles';
+import { appTheme, appStyles } from '../../styles/appStyles'
 
 export const trxListStyles = StyleSheet.create({
+  // Page
+
+  pageLayout: {
+    backgroundColor: appTheme.colors.background,
+    flex: 1,
+  },
+
   // Search Bar
 
   searchBar: {
-    backgroundColor: AppColors.surface,
+    backgroundColor: appTheme.colors.surface,
     paddingHorizontal: 14,
     paddingVertical: 20,
     flexDirection: 'row',
@@ -13,8 +20,8 @@ export const trxListStyles = StyleSheet.create({
     alignItems: 'center',
   },
   searchBarField: {
-    ...globalStyles.textStyles,
-    fontSize:12,
+    ...appStyles.textStyles,
+    fontSize: 12,
     padding: 0,
     margin: 0,
     flexGrow: 1,
@@ -28,8 +35,8 @@ export const trxListStyles = StyleSheet.create({
     alignItems: 'center',
   },
   searchBarButtonText: {
-    color: AppColors.red,
-    fontFamily: AppFonts.bold,
+    color: appTheme.colors.red,
+    fontFamily: appTheme.fonts.bold,
     fontSize: 12,
   },
 
@@ -40,13 +47,13 @@ export const trxListStyles = StyleSheet.create({
     paddingVertical: 12,
   },
   listItem: {
-    backgroundColor: AppColors.surface,
+    backgroundColor: appTheme.colors.surface,
     paddingVertical: 12,
     paddingLeft: 18,
     paddingRight: 10,
     borderRadius: 6,
     borderLeftWidth: 8,
-    borderLeftColor: AppColors.black,
+    borderLeftColor: appTheme.colors.black,
     flexDirection: 'row',
     alignContent: 'space-between',
     alignItems: 'center',
@@ -56,14 +63,14 @@ export const trxListStyles = StyleSheet.create({
     flexGrow: 1,
   },
   listTitle: {
-    fontFamily: AppFonts.bold,
-    fontSize: AppFonts.sizeLarge,
+    fontFamily: appTheme.fonts.bold,
+    fontSize: appTheme.fonts.sizeLarge,
   },
   listDescription: {
     marginTop: 2,
   },
   listSubDescription: {
-    fontSize: AppFonts.sizeSecondary,
+    fontSize: appTheme.fonts.sizeSecondary,
     marginTop: 2,
   },
 })

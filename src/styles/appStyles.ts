@@ -2,7 +2,7 @@ import {
   StyleSheet
 } from 'react-native'
 
-export class AppColors{
+class appColors{
   // Swatches
   static black= '#070707';
   static gray= '#b0b0b0';
@@ -25,7 +25,7 @@ export class AppColors{
   static danger = this.red;
 }
 
-export const AppFonts = {
+const appFonts = {
   // Weights
   regular: 'Montserrat-Regular',
   bold: 'Montserrat-Bold',
@@ -36,14 +36,31 @@ export const AppFonts = {
   sizeLarge: 16,
 }
 
-export const globalStyles = StyleSheet.create({
+const appLayout = {
+  // Radius
+  radiusPrimary: 6,
+  radiusSmall: 4,
+}
+
+export const appTheme = {
+  colors: appColors,
+  fonts: appFonts,
+  layout: appLayout,
+}
+
+export const appStyles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   textStyles: {
-    color: AppColors.textPrimary,
-    fontSize: AppFonts.sizePrimary,
-    fontFamily: AppFonts.regular,
+    color: appColors.textPrimary,
+    fontSize: appFonts.sizePrimary,
+    fontFamily: appFonts.regular,
 
     bold: {
-      fontFamily: AppFonts.bold,
+      fontFamily: appFonts.bold,
     },
   },
 })
