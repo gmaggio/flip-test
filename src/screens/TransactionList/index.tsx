@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { useContext } from 'react'
+import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
 
+import { DataUpdateContext } from '../../context/DataContext'
 import { appTheme } from '../../styles/appTheme'
 import AppText from '../../ui/AppText'
 import Badge from '../../ui/Badge'
 import Divider from '../../ui/Divider'
+import Tappable from '../../ui/Tappable'
 import { Formatters } from '../../utils/formatter'
 import { trxListStyles } from './TransactionList.styles'
 import { SortTypes, TransactionData } from './TransactionList.types'
@@ -26,7 +29,7 @@ const DATA: TransactionData[] = [
     remark: 'sample remark',
     createdAt: '2022-08-15 08:08:42',
     completedAt: '2022-08-15 08:08:42',
-    fee: 0
+    fee: 0,
   },
   {
     id: 'FT19862',
@@ -40,7 +43,7 @@ const DATA: TransactionData[] = [
     remark: 'sample remark',
     createdAt: '2022-08-15 08:07:42',
     completedAt: '2022-08-15 08:08:42',
-    fee: 0
+    fee: 0,
   },
   {
     id: 'FT16197',
@@ -54,19 +57,22 @@ const DATA: TransactionData[] = [
     remark: 'sample remark',
     createdAt: '2022-08-15 08:06:42',
     completedAt: '2022-08-15 08:08:42',
-    fee: 0
+    fee: 0,
   },
 ]
 var _dummyData: TransactionData[] = []
-for (let index = 0; index < (3 * 15); index++) {
+for (let index = 0; index < 3 * 3; index++) {
   var _curr = index % 3
   var _new = { ...DATA[_curr] }
   _new.id = _new.id + '-' + index
-  _new.id = _new.beneficiaryName + ' - ' + index
   _dummyData[index] = _new
 }
 
+var _styles = trxListStyles
+
 export default function TransactionList({ navigation }) {
+  const dataUpdateContext = useContext(DataUpdateContext)
+
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [sortType, setSortTypes] = useState('sort' as SortTypes)
 
@@ -80,7 +86,7 @@ export default function TransactionList({ navigation }) {
   }
 
   return (
-    <View style={trxListStyles.pageLayout}>
+    <View style={_styles.pageLayout}>
       <SortModal
         visible={sortModalVisible}
         value={sortType}
@@ -92,105 +98,104 @@ export default function TransactionList({ navigation }) {
         visible={sortModalVisible}
         toggleSortModal={toggleSortModal}
       />
-      <List />
+      <List
+        onItemTapped={(data) => {
+          dataUpdateContext(data)
+          navigation.navigate('TransactionDetails', {
+            params: data,
+          })
+        }}
+      />
     </View>
   )
 }
 
 const SearchBar = (props: {
-  sortType: SortTypes,
-  visible: any,
-  toggleSortModal: (visible: boolean) => void,
+  sortType: SortTypes
+  visible: any
+  toggleSortModal: (visible: boolean) => void
 }) => {
   const [text, onChangeText] = React.useState<string>('')
 
   return (
-    <View style={trxListStyles.searchBar}>
-      <LineIcon
-        name='magnifier'
-        size={26}
-        color={appTheme.texts.colorSubtle}
+    <View style={_styles.searchBar}>
+      <View style={_styles.searchBarFieldSection}>
+        <LineIcon
+          name='magnifier'
+          size={26}
+          color={appTheme.texts.colorSubtle}
+        />
+        <TextInput
+          style={_styles.searchBarField}
+          onChangeText={onChangeText}
+          value={text}
+          placeholder='Cari nama, bank, atau nominal'
+          keyboardType='numeric'
+        />
+      </View>
+      <Tappable
+        label={SortLabels[props.sortType]}
+        trailing={(trailingStyle) => {
+          return (
+            <Icon name='chevron-down' size={24} color={trailingStyle.color} />
+          )
+        }}
+        onTapped={() => props.toggleSortModal(true)}
       />
-      <Divider.H value={6} />
-      <TextInput
-        style={trxListStyles.searchBarField}
-        onChangeText={onChangeText}
-        value={text}
-        placeholder='Cari nama, bank, atau nominal'
-        keyboardType='numeric'
-      />
-      <Divider.H value={12} />
-      <Pressable onPress={() => props.toggleSortModal(true)}>
-        <View style={trxListStyles.searchBarButton}>
-          <AppText style={trxListStyles.searchBarButtonText}>{SortLabels[props.sortType]}</AppText>
-          <Divider.H value={6} />
-          <Icon name='chevron-down' size={24} color={appTheme.colors.red} />
-        </View>
-      </Pressable>
     </View>
   )
 }
 
-const List = () => {
-  function onPress(item: TransactionData): void {
-    console.log('item: ' + item.id)
-  }
-
+const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
   return (
     <FlatList
-      contentContainerStyle={trxListStyles.listLayout}
-
+      contentContainerStyle={_styles.listLayout}
       data={_dummyData}
-
       renderItem={({ item }) => {
-        var _colorIndicator = item.status === 'PENDING'
-          ? appTheme.colors.danger
-          : appTheme.colors.success
-
+        var _colorIndicator =
+          item.status === 'PENDING'
+            ? appTheme.colors.danger
+            : appTheme.colors.success
 
         return (
           <TouchableOpacity
             key={item.id}
-            onPress={() => onPress(item)}
-            activeOpacity={.5}
+            onPress={() => props.onItemTapped(item)}
+            activeOpacity={0.5}
           >
-            <View style={[
-              trxListStyles.listItem, { borderLeftColor: _colorIndicator }
-            ]}>
-              <View style={trxListStyles.listDetails}>
-                <AppText style={trxListStyles.listTitle}>
+            <View
+              style={[_styles.listItem, { borderLeftColor: _colorIndicator }]}
+            >
+              <View style={_styles.listDetails}>
+                <AppText style={_styles.listTitle}>
                   <Text>{Formatters.bankFixCase(item.senderBank)}</Text>
-                  <Icon name='arrow-forward' size={16} color={appTheme.texts.colorPrimary} />
+                  <Icon
+                    name='arrow-forward'
+                    size={16}
+                    color={appTheme.texts.colorPrimary}
+                  />
                   <Text>{Formatters.bankFixCase(item.beneficiaryBank)}</Text>
                 </AppText>
-                <AppText style={trxListStyles.listDescription}>
+                <AppText style={_styles.listDescription}>
                   {item.beneficiaryName.toUpperCase()}
                 </AppText>
-                <AppText style={trxListStyles.listSubDescription}>
-                  {Formatters.currency(item.amount)} ● {Formatters.date(item.createdAt)}
+                <AppText style={_styles.listSubDescription}>
+                  {Formatters.currency(item.amount)} ●{' '}
+                  {Formatters.date(item.createdAt)}
                 </AppText>
               </View>
               <View>
-                {item.status === 'PENDING' ?
-                  <Badge.Outline
-                    label={'Pengecekan'}
-                    color={_colorIndicator} />
-                  :
-                  <Badge.Filled
-                    label={'Berhasil'}
-                    color={_colorIndicator} />
-                }
+                {item.status === 'PENDING' ? (
+                  <Badge.Outline label={'Pengecekan'} color={_colorIndicator} />
+                ) : (
+                  <Badge.Filled label={'Berhasil'} color={_colorIndicator} />
+                )}
               </View>
             </View>
           </TouchableOpacity>
         )
       }}
-
-      ItemSeparatorComponent={
-        ({ }) => (
-          <Divider.V value={8} />
-        )
-      }
+      ItemSeparatorComponent={({}) => <Divider.V value={8} />}
     />
   )
 }

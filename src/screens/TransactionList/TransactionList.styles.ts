@@ -14,31 +14,25 @@ export const trxListStyles = StyleSheet.create({
 
   searchBar: {
     backgroundColor: appTheme.colors.surface,
-    paddingHorizontal: 14,
-    paddingVertical: 20,
+    paddingLeft: 14,
+    paddingRight: 8,
     flexDirection: 'row',
-    alignContent: 'space-between',
+    alignItems: 'center',
+  },
+  searchBarFieldSection: {
+    paddingVertical: 18,
+    flexDirection: 'row',
+    flexGrow: 1,
+    flexShrink: 1,
     alignItems: 'center',
   },
   searchBarField: {
     ...appTheme.styles.textStyles,
-    fontSize: 12,
+    fontSize: appTheme.texts.sizeSecondary,
     padding: 0,
-    margin: 0,
+    marginLeft: 6,
     flexGrow: 1,
     flexShrink: 1,
-  },
-  searchBarButton: {
-    padding: 0,
-    margin: 0,
-    flexDirection: 'row',
-    alignContent: 'space-between',
-    alignItems: 'center',
-  },
-  searchBarButtonText: {
-    color: appTheme.colors.red,
-    fontFamily: appTheme.texts.bold,
-    fontSize: 12,
   },
 
   // List

@@ -15,12 +15,9 @@ const Navigation = () => {
           headerShown: false,
         }}
       >
+        <Stack.Screen name='TransactionList' component={TransactionList} />
         <Stack.Screen
-          name='transaction-list'
-          component={TransactionList}
-        />
-        <Stack.Screen
-          name='transaction-details'
+          name='TransactionDetails'
           component={TransactionDetails}
         />
       </Stack.Navigator>
