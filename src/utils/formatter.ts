@@ -2,9 +2,9 @@ export class Formatters {
   /**
    * Fixes the letter case for the name of the bank.
    * If the bank's name is 4 characters or below, it will be converted into uppercase.
-   * Otherwise, it will be a title case
-   * @param bankName The name of the bank.
-   * @returns The formatted name of the bank.
+   * Otherwise, it will be a title case,
+   * @param {string} bankName The name of the bank.
+   * @returns {string} The formatted name of the bank.
    */
   static bankFixCase(bankName: string): string {
     var _bankName: string
@@ -20,8 +20,8 @@ export class Formatters {
 
   /**
    * Converts currency value into Indonesian currency format.
-   * @param value The currency value.
-   * @returns The formatted Indonesian currency.
+   * @param {number} value The currency value.
+   * @returns {string} The formatted Indonesian currency.
    */
   static currency(value: number): string {
     return 'Rp' + value.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.');
@@ -29,8 +29,8 @@ export class Formatters {
 
   /**
    * Formats the date in 'd MMMM YYYY' local format (eg. 5 Juni 2022).
-   * @param date The date value in ISO format.
-   * @returns The local date in 'd MMMM YYYY' format (eg. 5 Juni 2022).
+   * @param {string} date The date value in ISO format.
+   * @returns {string} The local date in 'd MMMM YYYY' format (eg. 5 Juni 2022).
    */
   static date(date: string): string {
     var _date = new Date(date.replace(' ', 'T'));

@@ -5,7 +5,7 @@ export class Helpers {
   /**
    * Copy text to clipboard.
    * @param {string} text The text to copy to clipboard.
-   * @param {string} props.message Optional toast message clarifying the copied text.
+   * @param {string} [props.message] Optional toast message clarifying the copied text.
    */
   static copyToClipboard(text: string, props?: { message?: string }): void {
     Clipboard.setString(text)
