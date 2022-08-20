@@ -49,7 +49,6 @@ export const trxListStyles = StyleSheet.create({
     borderLeftWidth: 6,
     borderLeftColor: appTheme.colors.black,
     flexDirection: 'row',
-    alignContent: 'space-between',
     alignItems: 'center',
   },
   listDetails: {

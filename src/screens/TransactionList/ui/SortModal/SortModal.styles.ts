@@ -4,11 +4,11 @@ import { appTheme } from '../../../../styles/appTheme';
 
 export const sortModalStyles = StyleSheet.create({
   sortOptionsList: {
+    paddingHorizontal: 0,
     paddingVertical: 20
   },
   sortOptionsItem: {
-    paddingHorizontal: 4,
-    paddingVertical: 20,
+    padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },

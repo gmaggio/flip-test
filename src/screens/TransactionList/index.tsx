@@ -7,7 +7,7 @@ import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
 import { DataUpdateContext } from '../../context/DataContext'
 import { appTheme } from '../../styles/appTheme'
 import AppText from '../../ui/AppText'
-import Badge from '../../ui/Badge'
+import Badge, { BadgeProps } from '../../ui/Badge'
 import Divider from '../../ui/Divider'
 import Tappable from '../../ui/Tappable'
 import { Formatters } from '../../utils/formatter'
@@ -71,7 +71,7 @@ for (let index = 0; index < 3 * 3; index++) {
 var _styles = trxListStyles
 
 export default function TransactionList({ navigation }) {
-  const dataUpdateContext = useContext(DataUpdateContext)
+  const _updateData = useContext(DataUpdateContext)
 
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [sortType, setSortTypes] = useState('sort' as SortTypes)
@@ -100,10 +100,8 @@ export default function TransactionList({ navigation }) {
       />
       <List
         onItemTapped={(data) => {
-          dataUpdateContext(data)
-          navigation.navigate('TransactionDetails', {
-            params: data,
-          })
+          _updateData(data)
+          navigation.push('TransactionDetails')
         }}
       />
     </View>
@@ -148,16 +146,27 @@ const SearchBar = (props: {
 }
 
 const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
+  var _badgeProps: {
+    PENDING: BadgeProps
+    SUCCESS: BadgeProps
+  } = {
+    PENDING: {
+      type: 'outline',
+      label: 'Pengecekan',
+      color: appTheme.colors.danger,
+    },
+    SUCCESS: {
+      type: 'filled',
+      label: 'Berhasil',
+      color: appTheme.colors.success,
+    },
+  }
+
   return (
     <FlatList
       contentContainerStyle={_styles.listLayout}
       data={_dummyData}
       renderItem={({ item }) => {
-        var _colorIndicator =
-          item.status === 'PENDING'
-            ? appTheme.colors.danger
-            : appTheme.colors.success
-
         return (
           <TouchableOpacity
             key={item.id}
@@ -165,7 +174,10 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
             activeOpacity={0.5}
           >
             <View
-              style={[_styles.listItem, { borderLeftColor: _colorIndicator }]}
+              style={[
+                _styles.listItem,
+                { borderLeftColor: _badgeProps[item.status].color },
+              ]}
             >
               <View style={_styles.listDetails}>
                 <AppText style={_styles.listTitle}>
@@ -187,11 +199,11 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
                 </AppText>
               </View>
               <View>
-                {item.status === 'PENDING' ? (
-                  <Badge.Outline label={'Pengecekan'} color={_colorIndicator} />
-                ) : (
-                  <Badge.Filled label={'Berhasil'} color={_colorIndicator} />
-                )}
+                <Badge
+                  type={_badgeProps[item.status].type}
+                  label={_badgeProps[item.status].label}
+                  color={_badgeProps[item.status].color}
+                />
               </View>
             </View>
           </TouchableOpacity>

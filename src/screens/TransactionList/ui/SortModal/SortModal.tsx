@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableHighlight, View } from 'react-native'
+import { TouchableNativeFeedback, View } from 'react-native'
 
 import AppText from '../../../../ui/AppText'
 import ModalBox from '../../../../ui/ModalBox'
@@ -29,10 +29,9 @@ const SortModal = (props: {
       style={_styles.sortOptionsList}
     >
       {Object.keys(SortLabels).map((item) => (
-        <TouchableHighlight
+        <TouchableNativeFeedback
           key={item}
           onPress={() => props.onSelect(item as SortTypes)}
-          activeOpacity={0.5}
         >
           <View style={_styles.sortOptionsItem}>
             <View style={_styles.sortOptionsSwitch}>
@@ -44,7 +43,7 @@ const SortModal = (props: {
               {SortLabels[item]}
             </AppText>
           </View>
-        </TouchableHighlight>
+        </TouchableNativeFeedback>
       ))}
     </ModalBox>
   )

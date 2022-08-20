@@ -1,7 +1,9 @@
 import * as React from 'react'
+import { useContext } from 'react'
 import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
+import { DataContext } from '../../context/DataContext'
 import KeyValue from '../../data/KeyValue'
 import { appTheme } from '../../styles/appTheme'
 import AppText from '../../ui/AppText'
@@ -12,30 +14,28 @@ import { trxDetailsStyles } from './TransactionDetails.styles'
 
 var _styles = trxDetailsStyles
 
-export default function TransactionDetails() {
-  // const dataContext = useContext(DataContext)
-  const dataContext = {
-    // TEST: remove once done testing
-    id: 'FT7802',
-    amount: 3098714,
-    uniqueCode: 117,
-    status: 'SUCCESS',
-    senderBank: 'bni',
-    accountNumber: '5793436805',
-    beneficiaryName: 'Rhiannan Simmons',
-    beneficiaryBank: 'muamalat',
-    remark: 'sample remark',
-    createdAt: '2022-08-15 08:08:42',
-    completedAt: '2022-08-15 08:08:42',
-    fee: 0,
-  }
+export default function TransactionDetails({ navigation }) {
+  const _data = useContext(DataContext)!
+  // TEST: remove once done testing
+  // const _data = {
+  //   id: 'FT7802',
+  //   amount: 3098714,
+  //   uniqueCode: 117,
+  //   status: 'SUCCESS',
+  //   senderBank: 'bni',
+  //   accountNumber: '5793436805',
+  //   beneficiaryName: 'Rhiannan Simmons',
+  //   beneficiaryBank: 'muamalat',
+  //   remark: 'sample remark',
+  //   createdAt: '2022-08-15 08:08:42',
+  //   completedAt: '2022-08-15 08:08:42',
+  //   fee: 0,
+  // }
 
   return (
     <View style={_styles.pageLayout}>
       <View style={[_styles.sectionLayout, _styles.trxIdSection]}>
-        <AppText style={_styles.trxIdText}>
-          ID TRANSAKSI: #{dataContext?.id}
-        </AppText>
+        <AppText style={_styles.trxIdText}>ID TRANSAKSI: #{_data?.id}</AppText>
         <Tappable
           style={_styles.tappable}
           label=''
@@ -56,7 +56,7 @@ export default function TransactionDetails() {
           style={_styles.headingButton}
           label='Tutup'
           onTapped={() => {
-            console.log(`\n-----> Tapped TUTUP`)
+            navigation.pop()
           }}
         />
       </View>
@@ -65,37 +65,37 @@ export default function TransactionDetails() {
 
       <View style={[_styles.sectionLayout, _styles.detailsSection]}>
         <AppText style={_styles.detailsTitle}>
-          <Text>{Formatters.bankFixCase(dataContext?.senderBank)}</Text>
+          <Text>{Formatters.bankFixCase(_data?.senderBank)}</Text>
           <Icon
             name='arrow-forward'
             size={16}
             color={appTheme.texts.colorPrimary}
           />
-          <Text>{Formatters.bankFixCase(dataContext?.beneficiaryBank)}</Text>
+          <Text>{Formatters.bankFixCase(_data?.beneficiaryBank)}</Text>
         </AppText>
         <View style={_styles.detailsDataSection}>
           {
             // Details List
             Array<KeyValue<string, string>>(
               new KeyValue({
-                key: dataContext?.beneficiaryName,
-                value: dataContext?.accountNumber,
+                key: _data?.beneficiaryName,
+                value: _data?.accountNumber,
               }),
               new KeyValue({
                 key: 'NOMINAL',
-                value: Formatters.currency(dataContext?.amount),
+                value: Formatters.currency(_data?.amount),
               }),
               new KeyValue({
                 key: 'BERITA TRANSFER',
-                value: dataContext?.remark,
+                value: _data?.remark,
               }),
               new KeyValue({
                 key: 'KODE UNIK',
-                value: dataContext?.uniqueCode.toString(),
+                value: _data?.uniqueCode.toString(),
               }),
               new KeyValue({
                 key: 'WAKTU DIBUAT',
-                value: Formatters.date(dataContext?.createdAt),
+                value: Formatters.date(_data?.createdAt),
               }),
             ).map((item, index, array) => {
               var _column = 2

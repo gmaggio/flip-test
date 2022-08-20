@@ -58,7 +58,6 @@ export const trxDetailsStyles = StyleSheet.create({
   detailsDataSection: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignContent: 'space-between',
   },
   detailsData: {
     marginBottom: 28,
