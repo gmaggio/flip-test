@@ -122,7 +122,7 @@ const SearchBar = (props: {
       <View style={_styles.searchBarFieldSection}>
         <LineIcon
           name='magnifier'
-          size={26}
+          size={20}
           color={appTheme.texts.colorSubtle}
         />
         <TextInput
@@ -134,6 +134,7 @@ const SearchBar = (props: {
         />
       </View>
       <Tappable
+        style={_styles.searchButton}
         label={SortLabels[props.sortType]}
         trailing={(trailingStyle) => {
           return (
@@ -179,8 +180,9 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
                 <AppText style={_styles.listDescription}>
                   {item.beneficiaryName.toUpperCase()}
                 </AppText>
-                <AppText style={_styles.listSubDescription}>
-                  {Formatters.currency(item.amount)} ●{' '}
+                <AppText style={_styles.listDescription}>
+                  {Formatters.currency(item.amount)}
+                  {' ● '}
                   {Formatters.date(item.createdAt)}
                 </AppText>
               </View>
@@ -195,7 +197,7 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
           </TouchableOpacity>
         )
       }}
-      ItemSeparatorComponent={({}) => <Divider.V value={8} />}
+      ItemSeparatorComponent={({}) => <Divider.V size={8} />}
     />
   )
 }

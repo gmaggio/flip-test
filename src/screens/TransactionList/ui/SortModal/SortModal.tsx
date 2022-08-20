@@ -1,11 +1,12 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableHighlight, View } from 'react-native'
 
 import AppText from '../../../../ui/AppText'
 import ModalBox from '../../../../ui/ModalBox'
 import { SortTypes } from '../../TransactionList.types'
 import { sortModalStyles } from './SortModal.styles'
 
+var _styles = sortModalStyles
 
 export const SortLabels = {
   sort: 'URUTKAN',
@@ -16,37 +17,36 @@ export const SortLabels = {
 }
 
 const SortModal = (props: {
-  value: SortTypes,
-  visible: boolean,
-  onSelect: (value: SortTypes) => void,
-  onClose: () => void,
+  value: SortTypes
+  visible: boolean
+  onSelect: (value: SortTypes) => void
+  onClose: () => void
 }) => {
   return (
     <ModalBox
       visible={props.visible}
       onClose={props.onClose}
-      style={sortModalStyles.sortOptionsList}
+      style={_styles.sortOptionsList}
     >
-      {
-        Object.keys(SortLabels).map((item) => (
-          <TouchableOpacity
-            key={item}
-            onPress={() => props.onSelect(item as SortTypes)}
-            activeOpacity={.5}
-          >
-            <View style={sortModalStyles.sortOptionsItem}>
-              <View style={sortModalStyles.sortOptionsSwitch}>
-                {props.value === item ?
-                  <View style={sortModalStyles.sortOptionsSwitchActive} /> : null}
-              </View>
-              <AppText style={sortModalStyles.sortOptionsLabel}>
-                {SortLabels[item]}
-              </AppText>
+      {Object.keys(SortLabels).map((item) => (
+        <TouchableHighlight
+          key={item}
+          onPress={() => props.onSelect(item as SortTypes)}
+          activeOpacity={0.5}
+        >
+          <View style={_styles.sortOptionsItem}>
+            <View style={_styles.sortOptionsSwitch}>
+              {props.value === item ? (
+                <View style={_styles.sortOptionsSwitchActive} />
+              ) : null}
             </View>
-          </TouchableOpacity>
-        ))
-      }
-    </ModalBox >
+            <AppText style={_styles.sortOptionsLabel}>
+              {SortLabels[item]}
+            </AppText>
+          </View>
+        </TouchableHighlight>
+      ))}
+    </ModalBox>
   )
 }
 export default SortModal

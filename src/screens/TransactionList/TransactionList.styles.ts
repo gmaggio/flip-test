@@ -4,18 +4,15 @@ import { appTheme } from '../../styles/appTheme';
 
 export const trxListStyles = StyleSheet.create({
   // Page
-
   pageLayout: {
     backgroundColor: appTheme.colors.background,
     flex: 1,
   },
 
   // Search Bar
-
   searchBar: {
     backgroundColor: appTheme.colors.surface,
-    paddingLeft: 14,
-    paddingRight: 8,
+    paddingHorizontal: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -28,15 +25,17 @@ export const trxListStyles = StyleSheet.create({
   },
   searchBarField: {
     ...appTheme.styles.textStyles,
-    fontSize: appTheme.texts.sizeSecondary,
+    fontSize: appTheme.texts.sizePrimary,
     padding: 0,
     marginLeft: 6,
     flexGrow: 1,
     flexShrink: 1,
   },
+  searchButton: {
+    marginRight: -8,
+  },
 
   // List
-
   listLayout: {
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -44,10 +43,10 @@ export const trxListStyles = StyleSheet.create({
   listItem: {
     backgroundColor: appTheme.colors.surface,
     paddingVertical: 12,
-    paddingLeft: 18,
+    paddingLeft: 16,
     paddingRight: 10,
     borderRadius: 6,
-    borderLeftWidth: 8,
+    borderLeftWidth: 6,
     borderLeftColor: appTheme.colors.black,
     flexDirection: 'row',
     alignContent: 'space-between',

@@ -7,6 +7,7 @@ class appColors{
   static black= '#070707';
   static gray= '#b0b0b0';
   static grayLight= '#f5f9f8';
+  static grayLightVariant= '#eeeeee';
   static white= '#fff';
   static green= '#56b686';
   static red = '#f9663b';
@@ -26,9 +27,9 @@ const appTexts = {
   bold: 'Montserrat-Bold',
 
   // Sizes
-  sizePrimary: 14,
-  sizeSecondary: 12,
-  sizeLarge: 16,
+  sizePrimary: 12,
+  sizeSecondary: 11,
+  sizeLarge: 14,
 
   // Colors
   colorPrimary: appColors.black,
