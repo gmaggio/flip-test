@@ -16,14 +16,12 @@ const Tappable = (props: TappableProps) => {
 
   return (
     <Pressable onPress={props.onTapped} style={[styles.layout, props.style]}>
-      {_hasLabel ? (
-        <AppText style={styles.textStyle}>{props.label}</AppText>
-      ) : null}
-      {props.trailing != null ? (
-        <View style={_hasLabel ? styles.trailing : null}>
+      {_hasLabel && <AppText style={styles.textStyle}>{props.label}</AppText>}
+      {props.trailing && (
+        <View style={_hasLabel && styles.trailing}>
           {props.trailing(styles.trailing)}
         </View>
-      ) : null}
+      )}
     </Pressable>
   )
 }

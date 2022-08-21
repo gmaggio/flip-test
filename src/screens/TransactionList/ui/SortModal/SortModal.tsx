@@ -34,9 +34,9 @@ const SortModal = (props: {
       >
         <View style={_styles.sortOptionsItem}>
           <View style={_styles.sortOptionsSwitch}>
-            {props.value === item ? (
+            {props.value === item && (
               <View style={_styles.sortOptionsSwitchActive} />
-            ) : null}
+            )}
           </View>
           <AppText style={_styles.sortOptionsLabel}>{SortLabels[item]}</AppText>
         </View>

@@ -109,7 +109,7 @@ const DetailsList = (props: { data: TransactionData }) => {
         style={[
           _styles.detailsData,
           _styles.detailsData[_parity],
-          _isLast ? _styles.detailsData.isLast : null,
+          _isLast && _styles.detailsData.isLast,
         ]}
       >
         <View>
