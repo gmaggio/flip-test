@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import { DataUpdateContext } from '../../context/DataContext'
+import useApi from '../../hooks/useApi'
 import { appTheme } from '../../styles/appTheme'
 import AppText from '../../ui/AppText'
 import Badge, { BadgeProps } from '../../ui/Badge'
@@ -15,77 +16,24 @@ import { trxListStyles } from './TransactionList.styles'
 import { SortTypes, TransactionData } from './TransactionList.types'
 import SortModal, { SortLabels } from './ui/SortModal/SortModal'
 
-// TODO: Temporary data
-const DATA: TransactionData[] = [
-  {
-    id: 'FT7802',
-    amount: 3098714,
-    unique_code: 117,
-    status: 'SUCCESS',
-    sender_bank: 'bni',
-    account_number: '5793436805',
-    beneficiary_name: 'Rhiannan Simmons',
-    beneficiary_bank: 'muamalat',
-    remark: 'sample remark',
-    created_at: '2022-08-15 08:08:42',
-    completed_at: '2022-08-15 08:08:42',
-    fee: 0,
-  },
-  {
-    id: 'FT19862',
-    amount: 2136158,
-    unique_code: 834,
-    status: 'PENDING',
-    sender_bank: 'bni',
-    account_number: '462122715',
-    beneficiary_name: 'Shanice Harwood',
-    beneficiary_bank: 'bca',
-    remark: 'sample remark',
-    created_at: '2022-08-15 08:07:42',
-    completed_at: '2022-08-15 08:08:42',
-    fee: 0,
-  },
-  {
-    id: 'FT16197',
-    amount: 756637,
-    unique_code: 287,
-    status: 'SUCCESS',
-    sender_bank: 'bni',
-    account_number: '4670124158',
-    beneficiary_name: 'Beck Glover',
-    beneficiary_bank: 'mandiri',
-    remark: 'sample remark',
-    created_at: '2022-08-15 08:06:42',
-    completed_at: '2022-08-15 08:08:42',
-    fee: 0,
-  },
-]
-let _dummyData: TransactionData[] = []
-for (let index = 0; index < 3 * 3; index++) {
-  const _curr = index % 3
-  const _new = { ...DATA[_curr] }
-  _new.id = _new.id + '-' + index
-  _dummyData[index] = _new
-}
-
 const _styles = trxListStyles
 
 export default function TransactionList({ navigation }) {
+  const { response, loading, error } = useApi({
+    method: 'get',
+    url: '/frontend-test',
+  })
+
   const [data, setData] = useState<TransactionData[]>([])
 
-  const fetchData = async () => {
-    const _resp = await fetch('https://recruitment-test.flip.id/frontend-test')
-    const _dataObj: { [key: string]: TransactionData } = await _resp.json()
-    const _data: TransactionData[] = Object.values(_dataObj)
-
-    setData(_data)
-  }
-
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (response !== null) {
+      const _data: TransactionData[] = Object.values(response)
+      setData(_data)
+    }
+  }, [response])
 
-  const updateData = useContext(DataUpdateContext)!
+  const getSelectedData = useContext(DataUpdateContext)!
 
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [sortType, setSortTypes] = useState('sort' as SortTypes)
@@ -104,7 +52,7 @@ export default function TransactionList({ navigation }) {
   }
 
   function onItemTapped(data: TransactionData): void {
-    updateData(data)
+    getSelectedData(data)
     navigation.push('TransactionDetails')
   }
 
