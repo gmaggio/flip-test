@@ -5,8 +5,8 @@ axios.defaults.baseURL = 'https://recruitment-test.flip.id'
 
 const useApi = ({ url, method, body = null, headers = null }) => {
   const [response, setResponse] = useState<any>(null)
-  const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string>('')
 
   const fetchData = () => {
     const _headers = headers != null ? JSON.parse(headers) : null

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
-import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons'
 
@@ -58,18 +65,36 @@ export default function TransactionList({ navigation }) {
 
   return (
     <View style={_styles.pageLayout}>
-      <SortModal
-        visible={sortModalVisible}
-        value={sortType}
-        onSelect={selectSortType}
-        onClose={onSortModalClose}
-      />
-      <SearchBar
-        sortType={sortType}
-        visible={sortModalVisible}
-        toggleSortModal={toggleSortModal}
-      />
-      <List data={data} onItemTapped={onItemTapped} />
+      {loading && (
+        <View style={_styles.pageBlank}>
+          <ActivityIndicator size={100} color={appTheme.colors.gray} />
+        </View>
+      )}
+      {error && (
+        <View style={_styles.pageBlank}>
+          <Icon name='skull-outline' size={100} color={appTheme.colors.gray} />
+          <AppText style={_styles.errorTitle}>Ups! Maap!</AppText>
+          <AppText style={_styles.errorDescription}>
+            Silahkan coba lagi nanti.
+          </AppText>
+        </View>
+      )}
+      {!loading && !error && (
+        <>
+          <SortModal
+            visible={sortModalVisible}
+            value={sortType}
+            onSelect={selectSortType}
+            onClose={onSortModalClose}
+          />
+          <SearchBar
+            sortType={sortType}
+            visible={sortModalVisible}
+            toggleSortModal={toggleSortModal}
+          />
+          <List data={data} onItemTapped={onItemTapped} />
+        </>
+      )}
     </View>
   )
 }

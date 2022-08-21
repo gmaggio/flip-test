@@ -4,9 +4,26 @@ import { appTheme } from '../../styles/appTheme';
 
 export const trxListStyles = StyleSheet.create({
   // Page
+  pageBlank: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   pageLayout: {
     backgroundColor: appTheme.colors.background,
     flex: 1,
+  },
+
+  // Error
+  errorTitle: {
+    color: appTheme.colors.gray,
+    fontFamily: appTheme.texts.bold,
+    fontSize: appTheme.texts.sizeLarge,
+    marginTop: 10,
+  },
+  errorDescription: {
+    color: appTheme.colors.gray,
+    marginTop: 4,
   },
 
   // Search Bar
