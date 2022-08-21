@@ -4,9 +4,9 @@ import { TouchableNativeFeedback, View } from 'react-native'
 import AppText from '../../../../ui/AppText'
 import ModalBox from '../../../../ui/ModalBox'
 import { SortTypes } from '../../TransactionList.types'
-import { sortModalStyles } from './SortModal.styles'
+import { sortOptionsStyles } from './SortOptions.styles'
 
-const _styles = sortModalStyles
+const _styles = sortOptionsStyles
 
 export const SortLabels = {
   sort: 'URUTKAN',
@@ -16,7 +16,7 @@ export const SortLabels = {
   oldest: 'Tanggal Terlama',
 }
 
-const SortModal = (props: {
+const SortOptions = (props: {
   value: SortTypes
   visible: boolean
   onSelect: (value: SortTypes) => void
@@ -44,4 +44,4 @@ const SortModal = (props: {
     ))}
   </ModalBox>
 )
-export default SortModal
+export default SortOptions

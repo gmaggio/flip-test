@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { appTheme } from '../../../../styles/appTheme';
 
-export const sortModalStyles = StyleSheet.create({
+export const sortOptionsStyles = StyleSheet.create({
   sortOptionsList: {
     paddingHorizontal: 0,
     paddingVertical: 20

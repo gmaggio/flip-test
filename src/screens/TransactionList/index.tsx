@@ -21,7 +21,7 @@ import Tappable from '../../ui/Tappable'
 import { Formatters } from '../../utils/formatter'
 import { trxListStyles } from './TransactionList.styles'
 import { SortTypes, TransactionData } from './TransactionList.types'
-import SortModal, { SortLabels } from './ui/SortModal/SortModal'
+import SortOptions, { SortLabels } from './ui/SortOptions/SortOptions'
 
 const _styles = trxListStyles
 
@@ -42,20 +42,20 @@ export default function TransactionList({ navigation }) {
 
   const getSelectedData = useContext(DataUpdateContext)!
 
-  const [sortModalVisible, setSortModalVisible] = useState(false)
+  const [sortOptionsVisible, setSortOptionsVisible] = useState(false)
   const [sortType, setSortTypes] = useState('sort' as SortTypes)
 
-  function toggleSortModal(visible: boolean): void {
-    setSortModalVisible(visible)
+  function toggleSortOptions(visible: boolean): void {
+    setSortOptionsVisible(visible)
   }
 
   function selectSortType(type: SortTypes): void {
     setSortTypes(type)
-    setSortModalVisible(false)
+    setSortOptionsVisible(false)
   }
 
-  function onSortModalClose(): void {
-    toggleSortModal(false)
+  function onSortOptionsClose(): void {
+    toggleSortOptions(false)
   }
 
   function onItemTapped(data: TransactionData): void {
@@ -81,16 +81,16 @@ export default function TransactionList({ navigation }) {
       )}
       {!loading && !error && (
         <>
-          <SortModal
-            visible={sortModalVisible}
+          <SortOptions
+            visible={sortOptionsVisible}
             value={sortType}
             onSelect={selectSortType}
-            onClose={onSortModalClose}
+            onClose={onSortOptionsClose}
           />
           <SearchBar
             sortType={sortType}
-            visible={sortModalVisible}
-            toggleSortModal={toggleSortModal}
+            visible={sortOptionsVisible}
+            toggleSortOptions={toggleSortOptions}
           />
           <List data={data} onItemTapped={onItemTapped} />
         </>
@@ -102,12 +102,12 @@ export default function TransactionList({ navigation }) {
 const SearchBar = (props: {
   sortType: SortTypes
   visible: any
-  toggleSortModal: (visible: boolean) => void
+  toggleSortOptions: (visible: boolean) => void
 }) => {
   const [text, onChangeText] = React.useState<string>('')
 
-  function onShowSortModal(): void {
-    props.toggleSortModal(true)
+  function onShowSortOptions(): void {
+    props.toggleSortOptions(true)
   }
 
   return (
@@ -132,7 +132,7 @@ const SearchBar = (props: {
         trailing={(trailingStyle) => (
           <Icon name='chevron-down' size={24} color={trailingStyle.color} />
         )}
-        onTapped={onShowSortModal}
+        onTapped={onShowSortOptions}
       />
     </View>
   )
