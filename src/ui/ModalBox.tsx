@@ -4,29 +4,25 @@ import { Modal, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { appTheme } from '../styles/appTheme'
 
 const ModalBox = (props: {
-  children?: React.ReactNode,
-  visible: boolean,
-  onClose: () => void,
-  style?: StyleProp<ViewStyle>,
-}) => {
-  return (
-    <Modal
-      animationType='fade'
-      statusBarTranslucent={true}
-      transparent={true}
-      visible={props.visible}
-      onRequestClose={() => {
-        props.onClose()
-      }}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={[styles.modalLayout, props.style]}>
-          {props.children}
-        </View>
-      </View>
-    </Modal>
-  )
-}
+  children?: React.ReactNode
+  visible: boolean
+  onClose: () => void
+  style?: StyleProp<ViewStyle>
+}) => (
+  <Modal
+    animationType='fade'
+    statusBarTranslucent={true}
+    transparent={true}
+    visible={props.visible}
+    onRequestClose={() => {
+      props.onClose()
+    }}
+  >
+    <View style={styles.modalOverlay}>
+      <View style={[styles.modalLayout, props.style]}>{props.children}</View>
+    </View>
+  </Modal>
+)
 export default ModalBox
 
 // STYLES

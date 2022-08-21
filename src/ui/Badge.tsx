@@ -13,15 +13,15 @@ export type BadgeProps = {
 }
 
 const Badge = (props: BadgeProps) => {
-  var _color = props.color ?? appTheme.colors.gray
+  const _color = props.color ?? appTheme.colors.gray
 
-  var _layoutStyle: StyleProp<ViewStyle> = {
+  const _layoutStyle: StyleProp<ViewStyle> = {
     backgroundColor: props.type === 'filled' ? _color : undefined,
     borderWidth: props.type === 'outline' ? 1 : undefined,
     borderColor: props.type === 'outline' ? _color : undefined,
   }
 
-  var _textStyle: StyleProp<TextStyle> = {
+  const _textStyle: StyleProp<TextStyle> = {
     color:
       props.type === 'filled'
         ? appTheme.texts.colorOnDark

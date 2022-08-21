@@ -7,7 +7,7 @@ import Navigation from './src/navigation'
 export default function App () {
   const [selectedData, setSelectedData] = useState()
 
-  const saveSelectedData = (data) => {
+  function saveSelectedData (data) {
     setSelectedData(data)
   }
 

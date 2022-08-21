@@ -7,7 +7,7 @@ export class Formatters {
    * @returns {string} The formatted name of the bank.
    */
   static bankFixCase(bankName: string): string {
-    var _bankName: string
+    let _bankName: string
 
     if (bankName.length > 4) {
       _bankName = bankName.charAt(0).toUpperCase() + bankName.substring(1).toLowerCase()
@@ -33,8 +33,8 @@ export class Formatters {
    * @returns {string} The local date in 'd MMMM YYYY' format (eg. 5 Juni 2022).
    */
   static date(date: string): string {
-    var _date = new Date(date.replace(' ', 'T'));
-    var _options = { year: 'numeric', month: 'long', day: 'numeric' } as any;
+    const _date = new Date(date.replace(' ', 'T'));
+    const _options = { year: 'numeric', month: 'long', day: 'numeric' } as any;
 
     return new Intl.DateTimeFormat('id-ID', _options).format(_date)
   }

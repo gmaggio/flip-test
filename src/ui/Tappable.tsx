@@ -12,7 +12,7 @@ export type TappableProps = {
 }
 
 const Tappable = (props: TappableProps) => {
-  var _hasLabel: boolean = props.label.length > 0
+  const _hasLabel: boolean = props.label.length > 0
 
   return (
     <Pressable onPress={props.onTapped} style={[styles.layout, props.style]}>

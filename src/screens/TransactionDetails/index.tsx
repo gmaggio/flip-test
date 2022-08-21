@@ -11,12 +11,23 @@ import Divider from '../../ui/Divider'
 import Tappable from '../../ui/Tappable'
 import { Formatters } from '../../utils/formatter'
 import { Helpers } from '../../utils/helpers'
+import { TransactionData } from '../TransactionList/TransactionList.types'
 import { trxDetailsStyles } from './TransactionDetails.styles'
 
-var _styles = trxDetailsStyles
+const _styles = trxDetailsStyles
 
 export default function TransactionDetails({ navigation }) {
-  const _data = useContext(DataContext)!
+  const _data: TransactionData = useContext(DataContext)!
+
+  function onCopyId(): void {
+    Helpers.copyToClipboard(_data.id, {
+      message: 'ID transaksi telah disalin',
+    })
+  }
+
+  function onBack(): void {
+    navigation.pop()
+  }
 
   return (
     <View style={_styles.pageLayout}>
@@ -28,11 +39,7 @@ export default function TransactionDetails({ navigation }) {
           trailing={(trailingStyle) => (
             <Icon name='copy-outline' size={18} color={trailingStyle.color} />
           )}
-          onTapped={() => {
-            Helpers.copyToClipboard(_data.id, {
-              message: 'ID transaksi telah disalin',
-            })
-          }}
+          onTapped={onCopyId}
         />
       </View>
 
@@ -43,9 +50,7 @@ export default function TransactionDetails({ navigation }) {
         <Tappable
           style={_styles.headingButton}
           label='Tutup'
-          onTapped={() => {
-            navigation.pop()
-          }}
+          onTapped={onBack}
         />
       </View>
 
@@ -61,58 +66,59 @@ export default function TransactionDetails({ navigation }) {
           />
           <Text>{Formatters.bankFixCase(_data.beneficiaryBank)}</Text>
         </AppText>
-        <View style={_styles.detailsDataSection}>
-          {
-            // Details List
-            Array<KeyValue<string, string>>(
-              new KeyValue({
-                key: _data.beneficiaryName,
-                value: _data.accountNumber,
-              }),
-              new KeyValue({
-                key: 'NOMINAL',
-                value: Formatters.currency(_data.amount),
-              }),
-              new KeyValue({
-                key: 'BERITA TRANSFER',
-                value: _data.remark,
-              }),
-              new KeyValue({
-                key: 'KODE UNIK',
-                value: _data.uniqueCode.toString(),
-              }),
-              new KeyValue({
-                key: 'WAKTU DIBUAT',
-                value: Formatters.date(_data.createdAt),
-              }),
-            ).map((item, index, array) => {
-              var _column = 2
-              var _parity = index % _column ? 'even' : 'odd'
-              var _lastIndex = array.length - 1
-              var _lastOffset = _column - 1 * (array.length % _column)
-              var _isLast = index > _lastIndex - _lastOffset
-
-              return (
-                <View
-                  key={index}
-                  style={[
-                    _styles.detailsData,
-                    _styles.detailsData[_parity],
-                    _isLast ? _styles.detailsData.isLast : null,
-                  ]}
-                >
-                  <View>
-                    <AppText style={_styles.detailsDataKey}>{item.key}</AppText>
-                    <AppText style={_styles.detailsDataValue}>
-                      {item.value}
-                    </AppText>
-                  </View>
-                </View>
-              )
-            })
-          }
-        </View>
+        <DetailsList data={_data} />
       </View>
     </View>
   )
+}
+
+const DetailsList = (props: { data: TransactionData }) => {
+  const detailsData = Array<KeyValue<string, string>>(
+    new KeyValue({
+      key: props.data.beneficiaryName,
+      value: props.data.accountNumber,
+    }),
+    new KeyValue({
+      key: 'NOMINAL',
+      value: Formatters.currency(props.data.amount),
+    }),
+    new KeyValue({
+      key: 'BERITA TRANSFER',
+      value: props.data.remark,
+    }),
+    new KeyValue({
+      key: 'KODE UNIK',
+      value: props.data.uniqueCode.toString(),
+    }),
+    new KeyValue({
+      key: 'WAKTU DIBUAT',
+      value: Formatters.date(props.data.createdAt),
+    }),
+  )
+
+  const detailsList = detailsData.map((item, index, array) => {
+    const _column = 2
+    const _parity = index % _column ? 'even' : 'odd'
+    const _lastIndex = array.length - 1
+    const _lastOffset = _column - 1 * (array.length % _column)
+    const _isLast = index > _lastIndex - _lastOffset
+
+    return (
+      <View
+        key={index}
+        style={[
+          _styles.detailsData,
+          _styles.detailsData[_parity],
+          _isLast ? _styles.detailsData.isLast : null,
+        ]}
+      >
+        <View>
+          <AppText style={_styles.detailsDataKey}>{item.key}</AppText>
+          <AppText style={_styles.detailsDataValue}>{item.value}</AppText>
+        </View>
+      </View>
+    )
+  })
+
+  return <View style={_styles.detailsDataSection}>{detailsList}</View>
 }

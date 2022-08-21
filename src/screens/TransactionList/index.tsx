@@ -60,18 +60,18 @@ const DATA: TransactionData[] = [
     fee: 0,
   },
 ]
-var _dummyData: TransactionData[] = []
+let _dummyData: TransactionData[] = []
 for (let index = 0; index < 3 * 3; index++) {
-  var _curr = index % 3
-  var _new = { ...DATA[_curr] }
+  const _curr = index % 3
+  const _new = { ...DATA[_curr] }
   _new.id = _new.id + '-' + index
   _dummyData[index] = _new
 }
 
-var _styles = trxListStyles
+const _styles = trxListStyles
 
 export default function TransactionList({ navigation }) {
-  const _updateData = useContext(DataUpdateContext)
+  const updateData = useContext(DataUpdateContext)!
 
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [sortType, setSortTypes] = useState('sort' as SortTypes)
@@ -85,25 +85,29 @@ export default function TransactionList({ navigation }) {
     setSortModalVisible(false)
   }
 
+  function onSortModalClose(): void {
+    toggleSortModal(false)
+  }
+
+  function onItemTapped(data: TransactionData): void {
+    updateData(data)
+    navigation.push('TransactionDetails')
+  }
+
   return (
     <View style={_styles.pageLayout}>
       <SortModal
         visible={sortModalVisible}
         value={sortType}
-        onSelect={(value: SortTypes) => selectSortType(value)}
-        onClose={() => toggleSortModal(false)}
+        onSelect={selectSortType}
+        onClose={onSortModalClose}
       />
       <SearchBar
         sortType={sortType}
         visible={sortModalVisible}
         toggleSortModal={toggleSortModal}
       />
-      <List
-        onItemTapped={(data) => {
-          _updateData(data)
-          navigation.push('TransactionDetails')
-        }}
-      />
+      <List onItemTapped={onItemTapped} />
     </View>
   )
 }
@@ -114,6 +118,10 @@ const SearchBar = (props: {
   toggleSortModal: (visible: boolean) => void
 }) => {
   const [text, onChangeText] = React.useState<string>('')
+
+  function onShowSortModal(): void {
+    props.toggleSortModal(true)
+  }
 
   return (
     <View style={_styles.searchBar}>
@@ -134,19 +142,17 @@ const SearchBar = (props: {
       <Tappable
         style={_styles.searchButton}
         label={SortLabels[props.sortType]}
-        trailing={(trailingStyle) => {
-          return (
-            <Icon name='chevron-down' size={24} color={trailingStyle.color} />
-          )
-        }}
-        onTapped={() => props.toggleSortModal(true)}
+        trailing={(trailingStyle) => (
+          <Icon name='chevron-down' size={24} color={trailingStyle.color} />
+        )}
+        onTapped={onShowSortModal}
       />
     </View>
   )
 }
 
 const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
-  var _badgeProps: {
+  const _badgeProps: {
     PENDING: BadgeProps
     SUCCESS: BadgeProps
   } = {
@@ -162,54 +168,71 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
     },
   }
 
+  function onItemTapped(item: TransactionData): void {
+    props.onItemTapped(item)
+  }
+
+  const renderItem = ({ item }: { item: TransactionData }): JSX.Element => {
+    function _onItemTapped(): void {
+      onItemTapped(item)
+    }
+
+    const _senderBank = Formatters.bankFixCase(item.senderBank)
+    const _beneficiaryBank = Formatters.bankFixCase(item.beneficiaryBank)
+    const _amount = Formatters.currency(item.amount)
+    const _createdAt = Formatters.date(item.createdAt)
+
+    return (
+      <TouchableOpacity
+        key={item.id}
+        onPress={_onItemTapped}
+        activeOpacity={0.5}
+      >
+        <View
+          style={[
+            _styles.listItem,
+            { borderLeftColor: _badgeProps[item.status].color },
+          ]}
+        >
+          <View style={_styles.listDetails}>
+            <AppText style={_styles.listTitle}>
+              <Text>{_senderBank}</Text>
+              <Icon
+                name='arrow-forward'
+                size={16}
+                color={appTheme.texts.colorPrimary}
+              />
+              <Text>{_beneficiaryBank}</Text>
+            </AppText>
+            <AppText style={_styles.listDescription}>
+              {item.beneficiaryName.toUpperCase()}
+            </AppText>
+            <AppText style={_styles.listDescription}>
+              {_amount}
+              {' ● '}
+              {_createdAt}
+            </AppText>
+          </View>
+          <View>
+            <Badge
+              type={_badgeProps[item.status].type}
+              label={_badgeProps[item.status].label}
+              color={_badgeProps[item.status].color}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  const itemSeparatorComponent = () => <Divider.V size={8} />
+
   return (
     <FlatList
       contentContainerStyle={_styles.listLayout}
       data={_dummyData}
-      renderItem={({ item }) => {
-        return (
-          <TouchableOpacity
-            key={item.id}
-            onPress={() => props.onItemTapped(item)}
-            activeOpacity={0.5}
-          >
-            <View
-              style={[
-                _styles.listItem,
-                { borderLeftColor: _badgeProps[item.status].color },
-              ]}
-            >
-              <View style={_styles.listDetails}>
-                <AppText style={_styles.listTitle}>
-                  <Text>{Formatters.bankFixCase(item.senderBank)}</Text>
-                  <Icon
-                    name='arrow-forward'
-                    size={16}
-                    color={appTheme.texts.colorPrimary}
-                  />
-                  <Text>{Formatters.bankFixCase(item.beneficiaryBank)}</Text>
-                </AppText>
-                <AppText style={_styles.listDescription}>
-                  {item.beneficiaryName.toUpperCase()}
-                </AppText>
-                <AppText style={_styles.listDescription}>
-                  {Formatters.currency(item.amount)}
-                  {' ● '}
-                  {Formatters.date(item.createdAt)}
-                </AppText>
-              </View>
-              <View>
-                <Badge
-                  type={_badgeProps[item.status].type}
-                  label={_badgeProps[item.status].label}
-                  color={_badgeProps[item.status].color}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        )
-      }}
-      ItemSeparatorComponent={({}) => <Divider.V size={8} />}
+      renderItem={renderItem}
+      ItemSeparatorComponent={itemSeparatorComponent}
     />
   )
 }

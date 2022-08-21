@@ -7,22 +7,17 @@ import TransactionList from '../screens/TransactionList'
 
 const Stack = createNativeStackNavigator()
 
-const Navigation = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name='TransactionList' component={TransactionList} />
-        <Stack.Screen
-          name='TransactionDetails'
-          component={TransactionDetails}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
-}
+const Navigation = () => (
+  <NavigationContainer>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name='TransactionList' component={TransactionList} />
+      <Stack.Screen name='TransactionDetails' component={TransactionDetails} />
+    </Stack.Navigator>
+  </NavigationContainer>
+)
 
 export default Navigation
