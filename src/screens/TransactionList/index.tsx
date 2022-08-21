@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -20,43 +20,43 @@ const DATA: TransactionData[] = [
   {
     id: 'FT7802',
     amount: 3098714,
-    uniqueCode: 117,
+    unique_code: 117,
     status: 'SUCCESS',
-    senderBank: 'bni',
-    accountNumber: '5793436805',
-    beneficiaryName: 'Rhiannan Simmons',
-    beneficiaryBank: 'muamalat',
+    sender_bank: 'bni',
+    account_number: '5793436805',
+    beneficiary_name: 'Rhiannan Simmons',
+    beneficiary_bank: 'muamalat',
     remark: 'sample remark',
-    createdAt: '2022-08-15 08:08:42',
-    completedAt: '2022-08-15 08:08:42',
+    created_at: '2022-08-15 08:08:42',
+    completed_at: '2022-08-15 08:08:42',
     fee: 0,
   },
   {
     id: 'FT19862',
     amount: 2136158,
-    uniqueCode: 834,
+    unique_code: 834,
     status: 'PENDING',
-    senderBank: 'bni',
-    accountNumber: '462122715',
-    beneficiaryName: 'Shanice Harwood',
-    beneficiaryBank: 'bca',
+    sender_bank: 'bni',
+    account_number: '462122715',
+    beneficiary_name: 'Shanice Harwood',
+    beneficiary_bank: 'bca',
     remark: 'sample remark',
-    createdAt: '2022-08-15 08:07:42',
-    completedAt: '2022-08-15 08:08:42',
+    created_at: '2022-08-15 08:07:42',
+    completed_at: '2022-08-15 08:08:42',
     fee: 0,
   },
   {
     id: 'FT16197',
     amount: 756637,
-    uniqueCode: 287,
+    unique_code: 287,
     status: 'SUCCESS',
-    senderBank: 'bni',
-    accountNumber: '4670124158',
-    beneficiaryName: 'Beck Glover',
-    beneficiaryBank: 'mandiri',
+    sender_bank: 'bni',
+    account_number: '4670124158',
+    beneficiary_name: 'Beck Glover',
+    beneficiary_bank: 'mandiri',
     remark: 'sample remark',
-    createdAt: '2022-08-15 08:06:42',
-    completedAt: '2022-08-15 08:08:42',
+    created_at: '2022-08-15 08:06:42',
+    completed_at: '2022-08-15 08:08:42',
     fee: 0,
   },
 ]
@@ -71,6 +71,20 @@ for (let index = 0; index < 3 * 3; index++) {
 const _styles = trxListStyles
 
 export default function TransactionList({ navigation }) {
+  const [data, setData] = useState<TransactionData[]>([])
+
+  const fetchData = async () => {
+    const _resp = await fetch('https://recruitment-test.flip.id/frontend-test')
+    const _dataObj: { [key: string]: TransactionData } = await _resp.json()
+    const _data: TransactionData[] = Object.values(_dataObj)
+
+    setData(_data)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   const updateData = useContext(DataUpdateContext)!
 
   const [sortModalVisible, setSortModalVisible] = useState(false)
@@ -107,7 +121,7 @@ export default function TransactionList({ navigation }) {
         visible={sortModalVisible}
         toggleSortModal={toggleSortModal}
       />
-      <List onItemTapped={onItemTapped} />
+      <List data={data} onItemTapped={onItemTapped} />
     </View>
   )
 }
@@ -151,7 +165,10 @@ const SearchBar = (props: {
   )
 }
 
-const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
+const List = (props: {
+  data: TransactionData[]
+  onItemTapped: (item: TransactionData) => void
+}) => {
   const _badgeProps: {
     PENDING: BadgeProps
     SUCCESS: BadgeProps
@@ -177,10 +194,10 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
       onItemTapped(item)
     }
 
-    const _senderBank = Formatters.bankFixCase(item.senderBank)
-    const _beneficiaryBank = Formatters.bankFixCase(item.beneficiaryBank)
+    const _senderBank = Formatters.bankFixCase(item.sender_bank)
+    const _beneficiaryBank = Formatters.bankFixCase(item.beneficiary_bank)
     const _amount = Formatters.currency(item.amount)
-    const _createdAt = Formatters.date(item.createdAt)
+    const _createdAt = Formatters.date(item.created_at)
 
     return (
       <TouchableOpacity
@@ -205,7 +222,7 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
               <Text>{_beneficiaryBank}</Text>
             </AppText>
             <AppText style={_styles.listDescription}>
-              {item.beneficiaryName.toUpperCase()}
+              {item.beneficiary_name.toUpperCase()}
             </AppText>
             <AppText style={_styles.listDescription}>
               {_amount}
@@ -230,7 +247,7 @@ const List = (props: { onItemTapped: (item: TransactionData) => void }) => {
   return (
     <FlatList
       contentContainerStyle={_styles.listLayout}
-      data={_dummyData}
+      data={props.data}
       renderItem={renderItem}
       ItemSeparatorComponent={itemSeparatorComponent}
     />

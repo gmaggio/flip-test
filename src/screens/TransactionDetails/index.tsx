@@ -58,13 +58,13 @@ export default function TransactionDetails({ navigation }) {
 
       <View style={[_styles.sectionLayout, _styles.detailsSection]}>
         <AppText style={_styles.detailsTitle}>
-          <Text>{Formatters.bankFixCase(_data.senderBank)}</Text>
+          <Text>{Formatters.bankFixCase(_data.sender_bank)}</Text>
           <Icon
             name='arrow-forward'
             size={16}
             color={appTheme.texts.colorPrimary}
           />
-          <Text>{Formatters.bankFixCase(_data.beneficiaryBank)}</Text>
+          <Text>{Formatters.bankFixCase(_data.beneficiary_bank)}</Text>
         </AppText>
         <DetailsList data={_data} />
       </View>
@@ -75,8 +75,8 @@ export default function TransactionDetails({ navigation }) {
 const DetailsList = (props: { data: TransactionData }) => {
   const detailsData = Array<KeyValue<string, string>>(
     new KeyValue({
-      key: props.data.beneficiaryName,
-      value: props.data.accountNumber,
+      key: props.data.beneficiary_name,
+      value: props.data.account_number,
     }),
     new KeyValue({
       key: 'NOMINAL',
@@ -88,11 +88,11 @@ const DetailsList = (props: { data: TransactionData }) => {
     }),
     new KeyValue({
       key: 'KODE UNIK',
-      value: props.data.uniqueCode.toString(),
+      value: props.data.unique_code.toString(),
     }),
     new KeyValue({
       key: 'WAKTU DIBUAT',
-      value: Formatters.date(props.data.createdAt),
+      value: Formatters.date(props.data.created_at),
     }),
   )
 
