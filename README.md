@@ -14,7 +14,14 @@ Clone the app:
 git clone https://github.com/gmaggio/flip-test.git
 ```
 
-Run the app:
+Go to the directory and install the packages:
+
+```
+cd flip-test
+npm install
+```
+
+Open the Android emulator then run the app:
 
 ```
 yarn android
