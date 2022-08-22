@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import { useContext } from 'react'
 import {
   ActivityIndicator,
@@ -220,45 +220,83 @@ const List = (props: {
     },
   }
 
-  let _data = [...props.data]
-
   const _searchKeyword = props.filterState.searchKeyword ?? ''
   const _sort = props.filterState.sortType ?? SortTypes.sort
 
-  if (_searchKeyword.length > 0) {
-    _data = _data.filter(
-      (item) =>
-        item.beneficiary_name.toLowerCase().includes(_searchKeyword) ||
-        item.beneficiary_bank.toLowerCase().includes(_searchKeyword) ||
-        item.amount.toString().includes(_searchKeyword),
-    )
+  function search({
+    dataToSearch,
+    searchText,
+  }: {
+    dataToSearch: TransactionData[]
+    searchText: string
+  }): TransactionData[] {
+    let _dataSearched = dataToSearch
+
+    if (searchText.length > 0) {
+      _dataSearched = _dataSearched.filter(
+        (item) =>
+          item.beneficiary_name.toLowerCase().includes(searchText) ||
+          item.beneficiary_bank.toLowerCase().includes(searchText) ||
+          item.amount.toString().includes(searchText),
+      )
+    }
+
+    return _dataSearched
   }
 
-  const _unSorted = [..._data]
+  function sort({
+    dataToSort,
+    sortType,
+  }: {
+    dataToSort: TransactionData[]
+    sortType: SortTypes
+  }): TransactionData[] {
+    const _dataUnsorted = [...dataToSort]
 
-  if (_sort !== SortTypes.sort) {
-    _data.sort((a, b) => {
-      const nameA = a.beneficiary_name.toLowerCase()
-      const nameB = b.beneficiary_name.toLowerCase()
-      const dateA = new Date(a.created_at.replace(' ', 'T'))
-      const dateB = new Date(b.created_at.replace(' ', 'T'))
+    let _dataSorted = [...dataToSort]
 
-      switch (_sort) {
-        case SortTypes.alphaAsc:
-          return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
-        case SortTypes.alphaDesc:
-          return nameA > nameB ? -1 : nameA < nameB ? 1 : 0
-        case SortTypes.newest:
-          return dateA > dateB ? -1 : dateA < dateB ? 1 : 0
-        case SortTypes.oldest:
-          return dateA < dateB ? -1 : dateA > dateB ? 1 : 0
-        default:
-          return 0
-      }
+    if (sortType !== SortTypes.sort) {
+      _dataSorted.sort((a, b) => {
+        const nameA = a.beneficiary_name.toLowerCase()
+        const nameB = b.beneficiary_name.toLowerCase()
+        const dateA = new Date(a.created_at.replace(' ', 'T'))
+        const dateB = new Date(b.created_at.replace(' ', 'T'))
+
+        switch (sortType) {
+          case SortTypes.alphaAsc:
+            return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+          case SortTypes.alphaDesc:
+            return nameA > nameB ? -1 : nameA < nameB ? 1 : 0
+          case SortTypes.newest:
+            return dateA > dateB ? -1 : dateA < dateB ? 1 : 0
+          case SortTypes.oldest:
+            return dateA < dateB ? -1 : dateA > dateB ? 1 : 0
+          default:
+            return 0
+        }
+      })
+    } else {
+      _dataSorted = [..._dataUnsorted]
+    }
+
+    return [..._dataSorted]
+  }
+
+  const _data = useMemo((): TransactionData[] => {
+    let _currentData = [...props.data]
+
+    _currentData = search({
+      dataToSearch: _currentData,
+      searchText: _searchKeyword,
     })
-  } else {
-    _data = [..._unSorted]
-  }
+
+    _currentData = sort({
+      dataToSort: _currentData,
+      sortType: _sort,
+    })
+
+    return _currentData
+  }, [_searchKeyword, _sort])
 
   function onItemTapped(item: TransactionData): void {
     props.onItemTapped(item)
