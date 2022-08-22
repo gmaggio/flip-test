@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { useContext } from 'react'
 import {
   ActivityIndicator,
@@ -20,10 +20,47 @@ import Divider from '../../ui/Divider'
 import Tappable from '../../ui/Tappable'
 import { Formatters } from '../../utils/formatter'
 import { trxListStyles } from './TransactionList.styles'
-import { SortTypes, TransactionData } from './TransactionList.types'
-import SortOptions, { SortLabels } from './ui/SortOptions/SortOptions'
+import { TransactionData } from './TransactionList.types'
+import SortOptions, {
+  SortLabels,
+  SortTypes,
+} from './ui/SortOptions/SortOptions'
 
 const _styles = trxListStyles
+
+enum FilterDataTypes {
+  search = 'search',
+  sort = 'sort',
+}
+
+interface FilterDataState {
+  searchKeyword?: string
+  sortType?: SortTypes
+}
+
+interface FilterDataAction {
+  type: FilterDataTypes
+  payload: FilterDataState
+}
+
+function filterData(state: FilterDataState, action: FilterDataAction) {
+  const { type, payload } = action
+
+  switch (type) {
+    case FilterDataTypes.search:
+      return {
+        ...state,
+        searchKeyword: payload.searchKeyword,
+      }
+    case FilterDataTypes.sort:
+      return {
+        ...state,
+        sortType: payload.sortType,
+      }
+    default:
+      return state
+  }
+}
 
 export default function TransactionList({ navigation }) {
   const { response, loading, error } = useApi({
@@ -32,6 +69,14 @@ export default function TransactionList({ navigation }) {
   })
 
   const [data, setData] = useState<TransactionData[]>([])
+  const [sortOptionsVisible, setSortOptionsVisible] = useState(false)
+
+  const [state, dispatch] = useReducer(filterData, {
+    sortType: SortTypes.sort,
+    searchKeyword: '',
+  })
+
+  const getSelectedData = useContext(DataUpdateContext)!
 
   useEffect(() => {
     if (response !== null) {
@@ -40,17 +85,27 @@ export default function TransactionList({ navigation }) {
     }
   }, [response])
 
-  const getSelectedData = useContext(DataUpdateContext)!
-
-  const [sortOptionsVisible, setSortOptionsVisible] = useState(false)
-  const [sortType, setSortTypes] = useState('sort' as SortTypes)
-
   function toggleSortOptions(visible: boolean): void {
     setSortOptionsVisible(visible)
   }
 
+  function onSearchList(text: string): void {
+    dispatch({
+      type: FilterDataTypes.search,
+      payload: {
+        searchKeyword: text,
+      },
+    })
+  }
+
   function selectSortType(type: SortTypes): void {
-    setSortTypes(type)
+    dispatch({
+      type: FilterDataTypes.sort,
+      payload: {
+        sortType: type,
+      },
+    })
+
     setSortOptionsVisible(false)
   }
 
@@ -83,16 +138,17 @@ export default function TransactionList({ navigation }) {
         <>
           <SortOptions
             visible={sortOptionsVisible}
-            value={sortType}
+            value={state.sortType ?? SortTypes.sort}
             onSelect={selectSortType}
             onClose={onSortOptionsClose}
           />
           <SearchBar
-            sortType={sortType}
+            sortType={state.sortType ?? SortTypes.sort}
             visible={sortOptionsVisible}
+            onSearch={onSearchList}
             toggleSortOptions={toggleSortOptions}
           />
-          <List data={data} onItemTapped={onItemTapped} />
+          <List filterState={state} data={data} onItemTapped={onItemTapped} />
         </>
       )}
     </View>
@@ -102,9 +158,15 @@ export default function TransactionList({ navigation }) {
 const SearchBar = (props: {
   sortType: SortTypes
   visible: any
+  onSearch: (text: string) => void
   toggleSortOptions: (visible: boolean) => void
 }) => {
   const [text, onChangeText] = React.useState<string>('')
+
+  function onChangeSearchKeyword(text: string): void {
+    props.onSearch(text)
+    onChangeText(text)
+  }
 
   function onShowSortOptions(): void {
     props.toggleSortOptions(true)
@@ -120,10 +182,9 @@ const SearchBar = (props: {
         />
         <TextInput
           style={_styles.searchBarField}
-          onChangeText={onChangeText}
+          onChangeText={onChangeSearchKeyword}
           value={text}
           placeholder='Cari nama, bank, atau nominal'
-          keyboardType='numeric'
         />
       </View>
       <Tappable
@@ -140,6 +201,7 @@ const SearchBar = (props: {
 
 const List = (props: {
   data: TransactionData[]
+  filterState: FilterDataState
   onItemTapped: (item: TransactionData) => void
 }) => {
   const _badgeProps: {
@@ -156,6 +218,46 @@ const List = (props: {
       label: 'Berhasil',
       color: appTheme.colors.success,
     },
+  }
+
+  let _data = [...props.data]
+
+  const _searchKeyword = props.filterState.searchKeyword ?? ''
+  const _sort = props.filterState.sortType ?? SortTypes.sort
+
+  if (_searchKeyword.length > 0) {
+    _data = _data.filter(
+      (item) =>
+        item.beneficiary_name.toLowerCase().includes(_searchKeyword) ||
+        item.beneficiary_bank.toLowerCase().includes(_searchKeyword) ||
+        item.amount.toString().includes(_searchKeyword),
+    )
+  }
+
+  const _unSorted = [..._data]
+
+  if (_sort !== SortTypes.sort) {
+    _data.sort((a, b) => {
+      const nameA = a.beneficiary_name.toLowerCase()
+      const nameB = b.beneficiary_name.toLowerCase()
+      const dateA = new Date(a.created_at.replace(' ', 'T'))
+      const dateB = new Date(b.created_at.replace(' ', 'T'))
+
+      switch (_sort) {
+        case SortTypes.alphaAsc:
+          return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+        case SortTypes.alphaDesc:
+          return nameA > nameB ? -1 : nameA < nameB ? 1 : 0
+        case SortTypes.newest:
+          return dateA > dateB ? -1 : dateA < dateB ? 1 : 0
+        case SortTypes.oldest:
+          return dateA < dateB ? -1 : dateA > dateB ? 1 : 0
+        default:
+          return 0
+      }
+    })
+  } else {
+    _data = [..._unSorted]
   }
 
   function onItemTapped(item: TransactionData): void {
@@ -215,13 +317,24 @@ const List = (props: {
     )
   }
 
+  const listEmptyComponent = () => (
+    <View style={[_styles.listItem, _styles.listItem.empty]}>
+      <View style={_styles.listDetails}>
+        <AppText style={_styles.listDescription}>
+          <Text>Daftar tidak ditemukan</Text>
+        </AppText>
+      </View>
+    </View>
+  )
+
   const itemSeparatorComponent = () => <Divider.V size={8} />
 
   return (
     <FlatList
       contentContainerStyle={_styles.listLayout}
-      data={props.data}
+      data={_data}
       renderItem={renderItem}
+      ListEmptyComponent={listEmptyComponent}
       ItemSeparatorComponent={itemSeparatorComponent}
     />
   )

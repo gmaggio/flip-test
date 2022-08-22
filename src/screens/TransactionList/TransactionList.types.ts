@@ -12,5 +12,3 @@ export type TransactionData = {
   completed_at: string
   fee: number
 }
-
-export type SortTypes = 'sort' | 'alphaAsc' | 'alphaDesc' | 'newest' | 'oldest'

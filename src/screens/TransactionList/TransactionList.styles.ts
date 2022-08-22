@@ -23,6 +23,7 @@ export const trxListStyles = StyleSheet.create({
   },
   errorDescription: {
     color: appTheme.colors.gray,
+    fontFamily: appTheme.texts.bold,
     marginTop: 4,
   },
 
@@ -67,6 +68,11 @@ export const trxListStyles = StyleSheet.create({
     borderLeftColor: appTheme.colors.black,
     flexDirection: 'row',
     alignItems: 'center',
+
+    empty: {
+      backgroundColor: appTheme.colors.grayLightVariant,
+      borderLeftColor: appTheme.colors.gray,
+    },
   },
   listDetails: {
     marginRight: 12,

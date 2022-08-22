@@ -3,10 +3,17 @@ import { TouchableNativeFeedback, View } from 'react-native'
 
 import AppText from '../../../../ui/AppText'
 import ModalBox from '../../../../ui/ModalBox'
-import { SortTypes } from '../../TransactionList.types'
 import { sortOptionsStyles } from './SortOptions.styles'
 
 const _styles = sortOptionsStyles
+
+export enum SortTypes {
+  sort = 'sort',
+  alphaAsc = 'alphaAsc',
+  alphaDesc = 'alphaDesc',
+  newest = 'newest',
+  oldest = 'oldest',
+}
 
 export const SortLabels = {
   sort: 'URUTKAN',
@@ -27,10 +34,10 @@ const SortOptions = (props: {
     onClose={props.onClose}
     style={_styles.sortOptionsList}
   >
-    {Object.keys(SortLabels).map((item) => (
+    {Object.keys(SortTypes).map((item) => (
       <TouchableNativeFeedback
         key={item}
-        onPress={() => props.onSelect(item as SortTypes)}
+        onPress={() => props.onSelect(SortTypes[item])}
       >
         <View style={_styles.sortOptionsItem}>
           <View style={_styles.sortOptionsSwitch}>
