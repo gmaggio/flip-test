@@ -20,28 +20,18 @@ import Divider from '../../ui/Divider'
 import Tappable from '../../ui/Tappable'
 import { Formatters } from '../../utils/formatter'
 import { trxListStyles } from './TransactionList.styles'
-import { TransactionData } from './TransactionList.types'
+import {
+  FilterDataAction,
+  FilterDataState,
+  FilterDataTypes,
+  TransactionData,
+} from './TransactionList.types'
 import SortOptions, {
   SortLabels,
   SortTypes,
 } from './ui/SortOptions/SortOptions'
 
 const _styles = trxListStyles
-
-enum FilterDataTypes {
-  search = 'search',
-  sort = 'sort',
-}
-
-interface FilterDataState {
-  searchKeyword?: string
-  sortType?: SortTypes
-}
-
-interface FilterDataAction {
-  type: FilterDataTypes
-  payload: FilterDataState
-}
 
 function filterData(state: FilterDataState, action: FilterDataAction) {
   const { type, payload } = action
@@ -62,6 +52,9 @@ function filterData(state: FilterDataState, action: FilterDataAction) {
   }
 }
 
+/**
+ * Builds the transaction list screen.
+ */
 export default function TransactionList({ navigation }) {
   const { response, loading, error } = useApi({
     method: 'get',
@@ -85,10 +78,16 @@ export default function TransactionList({ navigation }) {
     }
   }, [response])
 
+  /**
+   * Toggles the modal window for the sort options.
+   */
   function toggleSortOptions(visible: boolean): void {
     setSortOptionsVisible(visible)
   }
 
+  /**
+   * Callback that is called to execute the search action.
+   */
   function onSearchList(text: string): void {
     dispatch({
       type: FilterDataTypes.search,
@@ -98,6 +97,9 @@ export default function TransactionList({ navigation }) {
     })
   }
 
+  /**
+   * Callback that is called when the sort option is selected.
+   */
   function selectSortType(type: SortTypes): void {
     dispatch({
       type: FilterDataTypes.sort,
@@ -109,10 +111,16 @@ export default function TransactionList({ navigation }) {
     setSortOptionsVisible(false)
   }
 
+  /**
+   * Hides the modal window for the sort options.
+   */
   function onSortOptionsClose(): void {
     toggleSortOptions(false)
   }
 
+  /**
+   * Callback that is called when the list item is tapped.
+   */
   function onItemTapped(data: TransactionData): void {
     getSelectedData(data)
     navigation.push('TransactionDetails')
@@ -155,6 +163,9 @@ export default function TransactionList({ navigation }) {
   )
 }
 
+/**
+ * Builds the search bar.
+ */
 const SearchBar = (props: {
   sortType: SortTypes
   visible: any
@@ -163,11 +174,17 @@ const SearchBar = (props: {
 }) => {
   const [text, onChangeText] = React.useState<string>('')
 
+  /**
+   * Callback that is called when the text input's text changes.
+   */
   function onChangeSearchKeyword(text: string): void {
     props.onSearch(text)
     onChangeText(text)
   }
 
+  /**
+   * Shows the modal window for the sort options.
+   */
   function onShowSortOptions(): void {
     props.toggleSortOptions(true)
   }
@@ -199,6 +216,9 @@ const SearchBar = (props: {
   )
 }
 
+/**
+ * Builds the transaction list.
+ */
 const List = (props: {
   data: TransactionData[]
   filterState: FilterDataState
@@ -223,6 +243,10 @@ const List = (props: {
   const _searchKeyword = props.filterState.searchKeyword ?? ''
   const _sort = props.filterState.sortType ?? SortTypes.sort
 
+  /**
+   * Filters the items in the data that contains the search keyword.
+   * @returns Items of data that contains the search keyword.
+   */
   function search({
     dataToSearch,
     searchText,
@@ -244,6 +268,10 @@ const List = (props: {
     return _dataSearched
   }
 
+  /**
+   * Sorts the items in the data according to the selected sorting type.
+   * @returns Items of data that is sorted by the selected sorting type..
+   */
   function sort({
     dataToSort,
     sortType,
@@ -282,6 +310,9 @@ const List = (props: {
     return [..._dataSorted]
   }
 
+  /**
+   * Build the data according to the search and sort conditions.
+   */
   const _data = useMemo((): TransactionData[] => {
     let _currentData = [...props.data]
 
@@ -298,10 +329,16 @@ const List = (props: {
     return _currentData
   }, [_searchKeyword, _sort])
 
+  /**
+   * Callback that is called when the list item is tapped.
+   */
   function onItemTapped(item: TransactionData): void {
     props.onItemTapped(item)
   }
 
+  /**
+   * Builds the transaction list item.
+   */
   const renderItem = ({ item }: { item: TransactionData }): JSX.Element => {
     function _onItemTapped(): void {
       onItemTapped(item)
@@ -355,6 +392,9 @@ const List = (props: {
     )
   }
 
+  /**
+   * Builds the transaction list empty view.
+   */
   const listEmptyComponent = () => (
     <View style={[_styles.listItem, _styles.listItem.empty]}>
       <View style={_styles.listDetails}>
@@ -365,6 +405,9 @@ const List = (props: {
     </View>
   )
 
+  /**
+   * Builds the transaction list separator.
+   */
   const itemSeparatorComponent = () => <Divider.V size={8} />
 
   return (

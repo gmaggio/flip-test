@@ -1,4 +1,6 @@
-export type TransactionData = {
+import { SortTypes } from './ui/SortOptions/SortOptions'
+
+type TransactionData = {
   id: string
   amount: number
   unique_code: number
@@ -12,3 +14,20 @@ export type TransactionData = {
   completed_at: string
   fee: number
 }
+
+enum FilterDataTypes {
+  search = 'search',
+  sort = 'sort',
+}
+
+interface FilterDataState {
+  searchKeyword?: string
+  sortType?: SortTypes
+}
+
+interface FilterDataAction {
+  type: FilterDataTypes
+  payload: FilterDataState
+}
+
+export { TransactionData, FilterDataTypes, FilterDataState, FilterDataAction }

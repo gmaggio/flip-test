@@ -6,12 +6,21 @@ import AppText from './AppText'
 
 export type BadgeTypes = 'filled' | 'outline'
 
+/**
+ * @param {BadgeTypes} type The type of badge.
+ * @param {string} label The text to be displayed inside the badge.
+ * @param {string} [color] The color applied to the badge depending on the badge type.
+ */
 export type BadgeProps = {
   type: BadgeTypes
   label: string
   color?: string
 }
 
+/**
+ * A badge typically used to indicate a status with distinguishable color.
+ * @param {BadgeProps} props The badge props
+ */
 const Badge = (props: BadgeProps) => {
   const _color = props.color ?? appTheme.colors.gray
 

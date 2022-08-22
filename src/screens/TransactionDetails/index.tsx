@@ -16,15 +16,24 @@ import { trxDetailsStyles } from './TransactionDetails.styles'
 
 const _styles = trxDetailsStyles
 
+/**
+ * Builds the transaction details screen.
+ */
 export default function TransactionDetails({ navigation }) {
   const _data: TransactionData = useContext(DataContext)!
 
+  /**
+   * Copies the transaction ID to the clipboard.
+   */
   function onCopyId(): void {
     Helpers.copyToClipboard(_data.id, {
       message: 'ID transaksi telah disalin',
     })
   }
 
+  /**
+   * Returns to the previous screen.
+   */
   function onBack(): void {
     navigation.pop()
   }
@@ -72,6 +81,9 @@ export default function TransactionDetails({ navigation }) {
   )
 }
 
+/**
+ * Builds the transaction details section.
+ */
 const DetailsList = (props: { data: TransactionData }) => {
   const detailsData = Array<KeyValue<string, string>>(
     new KeyValue({
@@ -96,6 +108,9 @@ const DetailsList = (props: { data: TransactionData }) => {
     }),
   )
 
+  /**
+   * Builds the transaction details items.
+   */
   const detailsList = detailsData.map((item, index, array) => {
     const _column = 2
     const _parity = index % _column ? 'even' : 'odd'

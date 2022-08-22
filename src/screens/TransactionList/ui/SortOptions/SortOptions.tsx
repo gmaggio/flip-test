@@ -23,6 +23,13 @@ export const SortLabels = {
   oldest: 'Tanggal Terlama',
 }
 
+/**
+ * The modal window for the sort options.
+ * @param props.value The current active type of sorting.
+ * @param props.visible The visibility state of the modal window.
+ * @param props.onSelect Callback that is called when the sort option is selected.
+ * @param props.onClose Callback that is called when the modal window is hidden.
+ */
 const SortOptions = (props: {
   value: SortTypes
   visible: boolean

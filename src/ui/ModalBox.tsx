@@ -3,6 +3,13 @@ import { Modal, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 import { appTheme } from '../styles/appTheme'
 
+/**
+ * The modal window that is styled for this app.
+ * @param [props.children] The content of the modal window.
+ * @param props.visible The visibility state of the modal window.
+ * @param props.onClose Callback that is called when the modal window is hidden.
+ * @param [props.style] The styles given to the modal window element.
+ */
 const ModalBox = (props: {
   children?: React.ReactNode
   visible: boolean
